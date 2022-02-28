@@ -1,0 +1,44 @@
+:root {
+	--main-color: #007acc;
+	--main-lighter: #0098ff;
+	--main-thinner: #F5F7F9;
+	--gray: #eeeeee;
+}
+
+body {
+	margin: 0;
+	margin-top: 52.97px;
+	background-color: var(--gray);
+}
+
+nav {
+	background-color: var(--main-lighter);
+	color: white;
+	padding: 16px 24px;
+	position: fixed;
+	top: 0;
+	width: 100%;
+	box-shadow: 0 0 5px black;
+}
+
+.left {
+	float: left;
+}
+
+form {
+	background-color: var(--main-thinner);
+	padding: 10px;
+	margin-bottom: 10px;
+}
+
+.coverage {
+	padding: 10px;
+	background-color: var(--main-thinner);
+	padding-bottom: 400px;
+}
+
+.right {
+	background-color: var(--main-thinner);
+	padding-bottom: 750px;
+	margin-left: 300px;
+}
