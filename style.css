@@ -39,6 +39,8 @@ form {
 
 .right {
 	background-color: var(--main-thinner);
-	padding-bottom: 750px;
+	padding-bottom: 700px;
 	margin-left: 300px;
+	padding-top: 50px;
+	padding-left: 50px;
 }
