@@ -6,30 +6,36 @@
 		<link rel="stylesheet" type="text/css" href="./style.css" />
 	</head>
 	<body>
-		<nav>一个加载地图数据的简单工具</nav>
-		<div class="left">
-			<form>
-				<p class="form-title">加载数据</p>
-				<p>数据类型</p>
-				<select>
-					<option value=".shp">shapefile</option>
-					<option value=".tif">tiff</option>
-				</select>
-				<p>空间范围</p>
-				<input type="checkbox" checked />
-				<label>使用当前显示的空间范围</label><br />
-				<label>左下角经纬度</label>
-				<input type="text" /><br />
-				<label>右下角经纬度</label>
-				<input type="text" /><br />
-				<button>加载</button>
-			</form>
-			<div class="coverage">
-				<p class="coverage-title">图层</p>
+		<div class="container">
+			<div class="left">
+				<div class="col-resize-bar"></div>
+				<div class="col-resize-line"></div>
+				<div class="col-resize-content">
+					<form>
+						<p class="form-title">加载数据</p>
+						<p>数据类型</p>
+						<select>
+							<option value=".shp">shapefile</option>
+							<option value=".tif">tiff</option>
+						</select>
+						<p>空间范围</p>
+						<input type="checkbox" checked />
+						<label>使用当前显示的空间范围</label><br />
+						<label>左下角经纬度</label>
+						<input type="text" /><br />
+						<label>右下角经纬度</label>
+						<input type="text" /><br />
+						<button>加载</button>
+					</form>
+					<div class="coverage">
+						<p class="coverage-title">图层</p>
+					</div>
+				</div>
+			</div>
+			<div class="right">
+				<p>此处用于显示地图</p>
 			</div>
 		</div>
-		<div class="right">
-			<p>此处用于显示地图</p>
-		</div>
+		<nav>一个加载地图数据的简单工具</nav>
 	</body>
 </html>

@@ -21,8 +21,41 @@ nav {
 	box-shadow: 0 0 5px black;
 }
 
+.container {
+	overflow: hidden;
+}
+
 .left {
 	float: left;
+	height: 700px;
+	position: relative;
+	margin-right: 4px;
+}
+
+.col-resize-bar {
+	width: 200px;
+	height: inherit;
+	resize: horizontal;
+	overflow: scroll;
+	opacity: 0;
+}
+
+.col-resize-bar::-webkit-scrollbar {
+	width: 200px;
+	height: inherit;
+}
+
+.col-resize-line {
+	position: absolute;
+	right: 0; top: 0; bottom: 0;
+	border-right: 2px solid var(--main-color);
+	pointer-events: none;
+}
+
+.col-resize-content {
+	overflow: hidden;
+	position: absolute;
+	top: 0; right: 5px; bottom: 0; left: 0;
 }
 
 form {
@@ -39,8 +72,8 @@ form {
 
 .right {
 	background-color: var(--main-thinner);
-	padding-bottom: 700px;
-	margin-left: 300px;
 	padding-top: 50px;
 	padding-left: 50px;
+	overflow: hidden;
+	height: 700px;
 }
