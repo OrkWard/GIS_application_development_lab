@@ -34,6 +34,7 @@ nav {
 
 .col-resize-bar {
 	width: 200px;
+	min-width: 200px;
 	height: inherit;
 	resize: horizontal;
 	overflow: scroll;
@@ -58,7 +59,35 @@ nav {
 	top: 0; right: 5px; bottom: 0; left: 0;
 }
 
+.upper {
+	position: relative;
+	width: 100vw;
+}
+
+.row-resize-bar {
+	height: 400px;
+	width: inherit;
+	resize: vertical;
+	overflow: scroll;
+	opacity: 0;
+}
+
+.row-resize-bar::-webkit-scrollbar {
+	height: 400px;
+	width: inherit;
+}
+
+.row-resize-line {
+	position: absolute;
+	bottom: 0; left: 0; right: 0;
+	border-bottom: 2px solid var(--main-color);
+	pointer-events: none;
+}
+
 form {
+	overflow: hidden;
+	position: absolute;
+	top: 0; bottom: 5px; right: 0; left: 0;
 	background-color: var(--main-thinner);
 	padding: 10px;
 	margin-bottom: 10px;
@@ -67,7 +96,7 @@ form {
 .coverage {
 	padding: 10px;
 	background-color: var(--main-thinner);
-	padding-bottom: 400px;
+	overflow: hidden;
 }
 
 .right {
