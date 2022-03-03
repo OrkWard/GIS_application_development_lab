@@ -15,24 +15,37 @@
 						<div class="row-resize-bar"></div>
 						<div class="row-resize-line"></div>
 						<form>
-							<p class="form-title">加载数据</p>
-							<p>数据类型</p>
+							<img src="./地图.png"/>
+							<p class="title">加载数据</p>
+							<div></div>
+							<hr />
+							<label class="form-item">数据类型：</label>
 							<select>
 								<option value=".shp">shapefile</option>
 								<option value=".tif">tiff</option>
 							</select>
-							<p>空间范围</p>
-							<input type="checkbox" checked />
-							<label>使用当前显示的空间范围</label><br />
-							<label>左下角经纬度</label>
-							<input type="text" /><br />
-							<label>右下角经纬度</label>
-							<input type="text" /><br />
+							<p class="form-item">空间范围：</p>
+							<label class="child-item">左下角经纬度</label>
+							<input type="text" class="textarea"/><label>，</label><input type="text" class="textarea"/><br />
+							<label class="child-item">右下角经纬度</label>
+							<input type="text" class="textarea"/><label>，</label><input type="text" class="textarea"/><br />
+							<input type="checkbox" class="checkbox" checked />
+							<label class="checktext">使用当前显示的空间范围</label><br />
+							<br>
+							<label class="form-item">站位：</label>
+							<select>
+								<option value="direct1">站位1</option>
+								<option value="direct2">站位2</option>
+							</select><br />
+							<input type="checkbox" class="checkbox" checked />
+							<label class="checktext">使用站位</label><br />
 							<button>加载</button>
 						</form>
 					</div>
 					<div class="coverage">
-						<p class="coverage-title">图层</p>
+						<img src="./图层.png">
+						<p class="title">图层</p>
+						<hr />
 					</div>
 				</div>
 			</div>
