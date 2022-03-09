@@ -1,14 +1,15 @@
 :root {
 	--main-color: #007acc;
 	--main-lighter: #0098ff;
-	--main-thinner: #F5F7F9;
-	--gray: #eeeeee;
+	--background: #ffffff;
+	--gray: #f4f4f4;
+	--line: #dcdcdc;
 }
 
 body {
 	margin: 0;
 	margin-top: 52.97px;
-	background-color: var(--main-thinner);
+	background-color: var(--background);
 }
 
 nav {
@@ -49,19 +50,27 @@ nav {
 .col-resize-line {
 	position: absolute;
 	right: 0; top: 0; bottom: 0;
-	border-left: 2px solid var(--main-color);
+	width: 5px;
+	border: 1px solid var(--line);
+	background-color: var(--gray);
+	background-image: url('./images/vertical_handle.png'), -webkit-linear-gradient(top,#f5f5f5,#f1f1f1);
+	background-repeat: no-repeat;
+	background-position: center;
 	pointer-events: none;
 }
 
 .col-resize-content {
 	overflow: hidden;
 	position: absolute;
-	top: 0; right: 5px; bottom: 0; left: 0;
+	top: 0;
+	right: 7px;
+	bottom: 0;
+	left: 0;
 }
 
 .upper {
 	position: relative;
-	width: 100vw;
+	/* width: 100vw; */
 }
 
 .row-resize-bar {
@@ -74,37 +83,47 @@ nav {
 
 .row-resize-bar::-webkit-scrollbar {
 	height: 350px;
-	width: inherit;
+	width: 100vw;
 }
 
 .row-resize-line {
 	position: absolute;
-	bottom: 0; left: 0; right: 0;
-	border-bottom: 2px solid var(--main-color);
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 5px;
+	background-color: var(--gray);
+	background-image: url('./images/handle.png'), -webkit-linear-gradient(top,#f5f5f5,#f1f1f1);
+	background-repeat: no-repeat;
+	background-position: center;
+	border-top: 1px solid var(--line);
+	border-bottom: 1px solid var(--line);
 	pointer-events: none;
-	margin-left: 3px;
+	margin-left: 0;
 }
 
 form {
 	overflow: hidden;
 	position: absolute;
-	top: 0; bottom: 5px; right: 0; left: 0;
-	background-color: var(--main-thinner);
-	padding-left: 10px;
-	padding-top: 10px;
+	top: 0;
+	bottom: 5px;
+	right: 0;
+	left: 0;
+	background-color: var(--background);
+	padding: 10px;
 	margin-bottom: 2px;
 }
 
 .coverage {
 	padding: 10px;
 	margin-top: 5px;
-	background-color: var(--main-thinner);
+	background-color: var(--background);
 	overflow: hidden;
 	height: -webkit-fill-available;
 }
 
 .right {
-	background-color: var(--main-thinner);
+	background-color: var(--background);
 	padding-top: 50px;
 	padding-left: 50px;
 	overflow: hidden;
@@ -162,7 +181,7 @@ button {
 	position: relative;
 	top: 20px;
 	left: 0px;
-	background-color: var(--main-thinner);
+	background-color: var(--background);
 	color: var(--main-color);
 	border: 2px solid var(--main-color);
 	padding: 5px 125px;
@@ -176,7 +195,7 @@ button:hover {
 	top: 20px;
 	left: 90px;
 	background-color: var(--main-color);
-	color: var(--main-thinner);
+	color: var(--background);
 	border: 2px solid var(--main-color);
 	padding: 5px 35px;
 	border-radius: 5px;
