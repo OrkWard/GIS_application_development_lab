@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>GIS应用开发作业1</title>
+		<title>WebGIS</title>
 		<meta charset="UTF-8" />
 		<link rel="stylesheet" type="text/css" href="./style.css" />
 	</head>
@@ -17,29 +17,33 @@
 						<form>
 							<img src="./images/地图.png"/>
 							<p class="title">加载数据</p>
-							<div></div>
 							<hr />
 							<label class="form-item">数据类型：</label>
-							<select>
+							<div id="type-error-msg"></div>
+							<select id="data-type">
+								<option value="unchosen">未选择</option>
 								<option value=".shp">shapefile</option>
 								<option value=".tif">tiff</option>
 							</select>
 							<p class="form-item">空间范围：</p>
-							<label class="child-item">左下角经纬度</label>
-							<input type="text" class="textarea"/><label>，</label><input type="text" class="textarea"/><br />
+							<div id="scale-error-msg"></div>
+							<label class="child-item" >左下角经纬度</label>
+							<input type="text" class="textarea left-bottom-scale"/><label>，</label><input type="text" class="textarea left-bottom-scale"/><br />
 							<label class="child-item">右下角经纬度</label>
-							<input type="text" class="textarea"/><label>，</label><input type="text" class="textarea"/><br />
-							<input type="checkbox" class="checkbox" checked />
+							<input type="text" class="textarea right-top-scale"/><label>，</label><input type="text" class="textarea right-top-scale"/><br />
+							<input type="checkbox" class="checkbox" id="use-scale"/>
 							<label class="checktext">使用当前显示的空间范围</label><br />
 							<br>
 							<label class="form-item">站位：</label>
-							<select>
+							<div id="stand-error-msg"></div>
+							<select id="stand">
+								<option value="unchosen">未选择</option>
 								<option value="direct1">站位1</option>
 								<option value="direct2">站位2</option>
 							</select><br />
-							<input type="checkbox" class="checkbox" checked />
-							<label class="checktext">使用站位</label><br />
-							<button>加载</button>
+							<input type="checkbox" class="checkbox" id="use-stand"/>
+							<label class="checktext">不使用站位</label><br />
+							<button id="load-btn">加载</button>
 						</form>
 					</div>
 					<div class="coverage">
@@ -53,6 +57,10 @@
 				<p>此处用于显示地图</p>
 			</div>
 		</div>
+		<div class="tools-bar">
+			
+		</div>
 		<nav>一个加载地图数据的简单工具</nav>
+		<script src="./main.js"></script>
 	</body>
 </html>
