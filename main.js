@@ -1,3 +1,6 @@
+const $ = (selector) => document.querySelector(selector);
+const $$ = (selector) => document.querySelectorAll(selector);
+
 // 存储数据的类
 class DataSet {
 	constructor(dataType, useStand, stand) {
@@ -46,23 +49,23 @@ function createCover(cover) {
 }
 
 // 用到的标签选择器
-const loadBtn = document.querySelector("#load-btn");
+const loadBtn = $("#load-btn");
 const scaleCheckbox = document.getElementById("use-scale");
 const standCheckbox = document.getElementById("use-stand");
-const rightTopScale = document.querySelectorAll(".right-top-scale");
-const leftBottomScale = document.querySelectorAll(".left-bottom-scale");
+const rightTopScale = $$(".right-top-scale");
+const leftBottomScale = $$(".left-bottom-scale");
 const typeList = document.getElementById("data-type");
 const stand = document.getElementById("stand");
-const coverage = document.querySelector(".covers");
+const coverage = $(".covers");
 
 // 存储图层的数组和存储当前视图坐标的数组
 let covers = [];
 let globalScale;
 
 // 错误信息显示
-const typeError = document.querySelector("#type-error-msg");
-const scaleError = document.querySelector("#scale-error-msg");
-const standError = document.querySelector("#stand-error-msg");
+const typeError = $("#type-error-msg");
+const scaleError = $("#scale-error-msg");
+const standError = $("#stand-error-msg");
 
 // 加载按钮点击事件
 loadBtn.addEventListener("click", (event) => {
@@ -96,16 +99,16 @@ loadBtn.addEventListener("click", (event) => {
 		typeError.textContent = scaleError.textContent = standError.textContent = "";
 		typeList.style.boxShadow = "0 0 3px gray";
 		stand.style.boxShadow = "0 0 3px gray";
-		for (let element of leftBottomScale) {element.style.boxShadow = "0 0 3px gray";}
-		for (let element of rightTopScale) {element.style.boxShadow = "0 0 3px gray";}
+		for (let element of leftBottomScale) {element.style = "";}
+		for (let element of rightTopScale) {element.style = "";}
 		if (scaleCheckbox.checked === false) {
 			globalScale = [leftBottomScale[0].value, leftBottomScale[1].value, rightTopScale[0].value, rightTopScale[1].value];
 		}
 		covers.push(new DataSet(typeList.value, standCheckbox.checked, stand.value));
-		document.querySelector("form").reset();
+		$("form").reset();
 		createCover(covers[covers.length - 1]);
 	} else {
-		document.querySelector(".row-resize-bar").style.height = "400px";
+		$(".row-resize-bar").style.height = "400px";
 	}
 })
 
@@ -137,7 +140,7 @@ let dragObj, enterObj, dragIndex, enterIndex;
 
 coverage.addEventListener("dragstart", event => {
 	dragObj = event.target;
-	const dragList = document.querySelectorAll(".cover");
+	const dragList = $$(".cover");
 	dragList.forEach((item, index) => {
 		if (item === event.target) {
 			dragIndex = index;
@@ -163,7 +166,7 @@ coverage.addEventListener("dragenter", (event) => {
 		event.target.classList.add("hold");
 	}
 	enterObj = event.target;
-	const dragList = document.querySelectorAll(".cover");
+	const dragList = $$(".cover");
 	dragList.forEach((item, index) => {
 		if (item === event.target) {
 			enterIndex = index;
@@ -194,27 +197,93 @@ function onContentMenu(event) {
 	const menuObj = document.getElementById("menu");
 
 	// 显示菜单
+	menuObj.style.display = "block";
 	menuObj.style.left = event.clientX + "px";
 	menuObj.style.top = event.clientY + "px";
-	menuObj.style.width = "50px";
 	focusObj = event.target;
 } 
 
 // 关闭菜单
 window.onclick = (event) => {
 	const menuObj = document.getElementById("menu");
-	menuObj.style.width = 0;
-	menuObj.style.left = "-100px";
+	menuObj.style.display = "none";
 }
 
 let focusObj;
-const deleteBtn = document.querySelector("#delete");
+const deleteBtn = $("#delete");
 
 deleteBtn.addEventListener("click", (event) => {
 	focusObj.remove();
 })
 
 
-let openLoad = true;
-let openCoverage = true;
 let openToolNumber = 2;
+class Status {
+	constructor(onDisplay, position) {
+		this.onDisplay = onDisplay;
+		this.position = position;
+	}
+}
+
+const stateLoad = new Status(true, "upper");
+const stateCoverage = new Status(true, "lower");
+const loadButton = $("#load-tool");
+const coverageButton = $("#coverage-tool");
+
+function changeDisplay(State) {
+	switch (openToolNumber) {
+		case 0:
+			if (State.position === "upper") {
+				exchange();
+			}
+			$(".left").style.display = "";
+			State.onDisplay = true;
+			openToolNumber = 1;
+			break;
+		case 1:
+			if (State.onDisplay) {
+				$(".left").style.display = "none";
+				openToolNumber = 0;
+				State.onDisplay = false;
+			} else {
+				$(".upper").style.display = "";
+				exchange();
+				openToolNumber = 2;
+				State.onDisplay = true;
+			}
+			break;
+		case 2:
+			if (State.onDisplay) {
+				if (State.position === "upper") {
+					$(".upper").style.display = "none";
+					State.onDisplay = false;
+				} else {
+					exchange();
+					$(".upper").style.display = "none";
+					State.onDisplay = false;
+				}
+				openToolNumber = 1;
+			}
+	}
+}
+
+function exchange() {
+	const upper = $(".upper");
+	const lower = $(".lower");
+	const upperContent = upper.lastElementChild;
+	const lowerContext = lower.firstElementChild;
+	upperContent.remove();
+	lowerContext.remove();
+	upper.appendChild(lowerContext);
+	lower.appendChild(upperContent);
+	upperContent.classList.remove("upper-content");
+	lowerContext.classList.add("upper-content");
+	[stateCoverage.position, stateLoad.position] = [stateLoad.position, stateCoverage.position];
+}
+
+loadButton.addEventListener("click", (event) => {
+	changeDisplay(stateLoad);
+});
+coverageButton.addEventListener("click", (event) => {
+	changeDisplay(stateCoverage);
+});
