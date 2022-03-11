@@ -106,6 +106,7 @@ loadBtn.addEventListener("click", (event) => {
 		}
 		covers.push(new DataSet(typeList.value, standCheckbox.checked, stand.value));
 		$("form").reset();
+		stand.disabled = false;
 		createCover(covers[covers.length - 1]);
 	} else {
 		$(".row-resize-bar").style.height = "400px";
