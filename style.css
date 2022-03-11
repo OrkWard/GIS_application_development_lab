@@ -4,6 +4,8 @@
 	--background: #ffffff;
 	--gray: #f4f4f4;
 	--line: #dcdcdc;
+	--darker-background: #f1f2f3;
+	--lighter-background: #fcfcfc;
 }
 
 body {
@@ -126,7 +128,6 @@ form {
 }
 
 .coverage {
-	padding: 10px;
 	margin-top: 5px;
 	background-color: var(--background);
 	overflow: hidden;
@@ -156,8 +157,8 @@ form {
 .title {
 	font-size: 20px;
 	margin-bottom: 0px;
-	margin-top: 0;
-	margin-left: 29px;
+	margin-top: 10px;
+	margin-left: 39px;
 	padding-top: 0px;
 	width: fit-content;
 	font-weight: bold;
@@ -178,8 +179,8 @@ img {
 	width: 25px;
 	float: left;
 	position: relative;
-	left: 0;
-	top: 2px;
+	left: 10px;
+	top: 12px;
 }
 
 select {
@@ -206,6 +207,39 @@ select {
 	font-size: 13px;
 }
 
+.cover-name {
+	font-size: 20px;
+	margin-top: 0;
+	margin-bottom: 0;
+	padding-left: 10px;
+	padding-top: 5px;
+}
+
+.cover-stand {
+	margin: 0;
+	padding-left: 10px;
+	font-size: 10px;
+	padding-bottom: 5px;
+}
+
+.cover {
+	background-color: var(--darker-background);
+	border-left: 3px solid var(--main-color);
+	margin-bottom: 1px;
+}
+
+.cover:hover {
+	background-color: var(--lighter-background);
+}
+
+.covers {
+	margin-top: -9px;
+}
+
+.hold {
+	color: var(--main-color);
+}
+
 button {
 	background-color: var(--background);
 	color: var(--main-color);
@@ -221,8 +255,8 @@ button {
 }
 
 button:hover {
-		background-color: var(--main-color);
-		color: var(--background);
-		border: 2px solid var(--main-color);
-		padding: 5px 35px;
+	background-color: var(--main-color);
+	color: var(--background);
+	border: 2px solid var(--main-color);
+	padding: 5px 35px;
 }
