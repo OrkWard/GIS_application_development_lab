@@ -40,6 +40,8 @@ function createCover(cover) {
 
 	// 允许拖拽
 	new_cover.draggable = true;
+
+	new_cover.oncontextmenu = onContentMenu;
 	coverage.appendChild(new_cover);
 }
 
@@ -186,3 +188,33 @@ coverage.addEventListener("drop", (event) => {
 		enterObj.before(dragObj);
 	}
 })
+
+function onContentMenu(event) {
+	event.preventDefault();
+	const menuObj = document.getElementById("menu");
+
+	// 显示菜单
+	menuObj.style.left = event.clientX + "px";
+	menuObj.style.top = event.clientY + "px";
+	menuObj.style.width = "50px";
+	focusObj = event.target;
+} 
+
+// 关闭菜单
+window.onclick = (event) => {
+	const menuObj = document.getElementById("menu");
+	menuObj.style.width = 0;
+	menuObj.style.left = "-100px";
+}
+
+let focusObj;
+const deleteBtn = document.querySelector("#delete");
+
+deleteBtn.addEventListener("click", (event) => {
+	focusObj.remove();
+})
+
+
+let openLoad = true;
+let openCoverage = true;
+let openToolNumber = 2;
