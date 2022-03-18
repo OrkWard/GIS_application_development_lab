@@ -32,7 +32,7 @@ nav {
 	top: 0;
 	left: 0;
 	margin-top: 50px;
-	height: 750px;
+	height: 700px;
 	width: 40px;
 }
 
@@ -50,14 +50,14 @@ nav {
 
 .left {
 	float: left;
-	height: 750px;
+	height: 700px;
 	position: relative;
-	margin-right: 4px;
 }
 
 .col-resize-bar {
-	width: 375px;
-	min-width: 270px;
+	width: 350px;
+	min-width: 311px;
+	max-width: 376px;
 	height: inherit;
 	resize: horizontal;
 	overflow: scroll;
@@ -144,8 +144,6 @@ nav {
 
 .right {
 	background-color: var(--background);
-	padding-top: 50px;
-	padding-left: 50px;
 	overflow: hidden;
 	height: 700px;
 }
@@ -248,7 +246,7 @@ select {
 	color: var(--main-color);
 }
 
-button {
+#load-btn {
 	background-color: var(--background);
 	color: var(--main-color);
 	border: 2px solid var(--main-color);
@@ -262,7 +260,7 @@ button {
 	display: block;
 }
 
-button:hover {
+#load-btn:hover {
 	background-color: var(--main-color);
 	color: var(--background);
 	border: 2px solid var(--main-color);
@@ -292,4 +290,13 @@ button:hover {
 
 #load-tool, #coverage-tool {
 	cursor: pointer;
+}
+
+#map {
+	width: inherit;
+	height: inherit;
+}
+
+canvas {
+	width: inherit;
 }
