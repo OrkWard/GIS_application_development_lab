@@ -4,6 +4,8 @@
 		<meta charset="UTF-8" />
 		<title>WebGIS</title>
 		<link rel="stylesheet" type="text/css" href="./style.css" />
+		<script src="https://cesium.com/downloads/cesiumjs/releases/1.91/Build/Cesium/Cesium.js"></script>
+		<link href="https://cesium.com/downloads/cesiumjs/releases/1.91/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
 	</head>
 	<body>
 		<div class="container">
@@ -15,7 +17,7 @@
 						<div class="row-resize-bar"></div>
 						<div class="row-resize-line"></div>
 						<form class="upper-content" style="padding: 10px;">
-							<img src="./images/地图.png"/>
+							<img class="tools-icon" src="./images/地图.png"/>
 							<p class="title">加载数据</p>
 							<hr />
 							<label class="form-item">数据类型：</label>
@@ -48,7 +50,7 @@
 					</div>
 					<div class="lower">
 						<div class="coverage">
-							<img src="./images/图层.png">
+							<img class="tools-icon" src="./images/图层.png">
 							<p class="title">图层</p>
 							<hr />
 							<div class="covers"></div>
@@ -61,14 +63,14 @@
 			</div>
 		</div>
 		<div class="tools-bar">
-			<img src="./images/地图_white.png" id="load-tool" class="tool">
-			<img src="./images/图层_white.png" id="coverage-tool" class="tool">
+			<img class="tools-bar-icon tool" src="./images/地图_white.png" id="load-tool" >
+			<img class="tools-bar-icon tool" src="./images/图层_white.png" id="coverage-tool" >
 		</div>
 		<nav>加载地图数据的简单工具组</nav>
 		<div id="menu">
 			<div id="delete">删除</div>
 		</div>
 		<script type="text/javascript" src="./main.js"></script>
-		<script type="module" src="./globe.js"></script>
+		<script type="text/javascript" src="./globe.js"></script>
 	</body>
 </html>

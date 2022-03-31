@@ -180,7 +180,7 @@ hr {
 	margin-bottom: 5px;
 }
 
-img {
+img.tools-bar-icon, img.tools-icon {
 	height: 25px;
 	width: 25px;
 	float: left;
@@ -299,4 +299,8 @@ select {
 
 canvas {
 	width: inherit;
+}
+
+#cesium-container {
+	height: -webkit-fill-available;
 }
