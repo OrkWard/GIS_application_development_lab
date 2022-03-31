@@ -5,6 +5,7 @@
 		<title>WebGIS</title>
 		<link rel="stylesheet" type="text/css" href="./style.css" />
 		<script src="https://cesium.com/downloads/cesiumjs/releases/1.91/Build/Cesium/Cesium.js"></script>
+		<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
 		<link href="https://cesium.com/downloads/cesiumjs/releases/1.91/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
 	</head>
 	<body>
@@ -20,13 +21,22 @@
 							<img class="tools-icon" src="./images/地图.png"/>
 							<p class="title">加载数据</p>
 							<hr />
+
+							<!--选择数据类型-->
 							<label class="form-item">数据类型：</label>
 							<div id="type-error-msg"></div>
 							<select id="data-type">
 								<option value="unchosen">未选择</option>
-								<option value=".shp">shapefile</option>
-								<option value=".tif">tiff</option>
+								<option value="image">影像数据</option>
+								<option value="terrain">地形数据</option>
 							</select>
+							<br/>
+
+							<!--搜索影像数据进行添加，在数据类型为image时显示-->
+							<input type="text" class="textarea search-box" style="display:none" placeholder="输入进行搜索">
+							<ul class="search-result" style="display:none"></ul>
+							
+							<!--选择位置-->
 							<p class="form-item">空间范围：</p>
 							<div id="scale-error-msg"></div>
 							<label class="child-item" >左下角经纬度</label>
@@ -34,17 +44,19 @@
 							<label class="child-item">右下角经纬度</label>
 							<input type="text" class="textarea right-top-scale"/><label>，</label><input type="text" class="textarea right-top-scale"/><br />
 							<input type="checkbox" class="checkbox" id="use-scale"/>
-							<label class="checktext">使用当前显示的空间范围</label><br />
+							<label class="checktext">使用当前所处的位置</label><br />
 							<br>
-							<label class="form-item">站位：</label>
+							
+							<!--选择视角-->
+							<label class="form-item">视角：</label>
 							<div id="stand-error-msg"></div>
 							<select id="stand">
 								<option value="unchosen">未选择</option>
-								<option value="direct1">站位1</option>
-								<option value="direct2">站位2</option>
+								<option value="direct1">视角1</option>
+								<option value="direct2">视角2</option>
 							</select><br />
 							<input type="checkbox" class="checkbox" id="use-stand"/>
-							<label class="checktext">不使用站位</label><br />
+							<label class="checktext">使用当前视角</label><br />
 							<button id="load-btn">加载</button>
 						</form>
 					</div>
@@ -59,7 +71,8 @@
 				</div>
 			</div>
 			<div class="right">
-				<div id="cesium-container"></div>
+				<!--Cesium容器-->
+				<!-- <div id="cesium-container"></div> -->
 			</div>
 		</div>
 		<div class="tools-bar">

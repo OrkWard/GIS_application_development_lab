@@ -1,3 +1,4 @@
+// 覆盖Jquery自带的$变量
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => document.querySelectorAll(selector);
 
@@ -211,13 +212,14 @@ window.onclick = (event) => {
 }
 
 let focusObj;
-const deleteBtn = $("#delete");
 
+// 删除
+const deleteBtn = $("#delete");
 deleteBtn.addEventListener("click", (event) => {
 	focusObj.remove();
 })
 
-
+// 工具显示状态
 let openToolNumber = 2;
 class Status {
 	constructor(onDisplay, position) {
@@ -231,6 +233,7 @@ const stateCoverage = new Status(true, "lower");
 const loadButton = $("#load-tool");
 const coverageButton = $("#coverage-tool");
 
+// 改变显示状态
 function changeDisplay(State) {
 	switch (openToolNumber) {
 		case 0:
@@ -268,6 +271,7 @@ function changeDisplay(State) {
 	}
 }
 
+// 交换上下显示
 function exchange() {
 	const upper = $(".upper");
 	const lower = $(".lower");
@@ -288,3 +292,20 @@ loadButton.addEventListener("click", (event) => {
 coverageButton.addEventListener("click", (event) => {
 	changeDisplay(stateCoverage);
 });
+
+// 切换数据加载面板样式
+$("#data-type").addEventListener("change", (event) => {
+	event.preventDefault();
+	if (event.target.value === "unchosen") {
+		$(".search-box").style.display = "none";
+		$(".search-result").style.display = "none";
+	} else if (event.target.value === "image") {
+		$(".search-box").style.display = "";
+		$(".search-result").style.display = "";
+	} else if (event.target.vaule === "terrain") {
+		$(".search-box").style.display = "none";
+		$(".search-result").style.display = "none";
+	}
+})
+
+// 搜索
