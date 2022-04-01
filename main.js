@@ -21,9 +21,9 @@ function createCover(cover) {
 	attributes.style.pointerEvents = "none";
 	new_cover.appendChild(attributes);
 	
-	// 创建图层站位
+	// 创建图层id
 	attributes = document.createElement("p");
-	attributes.textContent = (`图层id：${cover.id}`)
+	attributes.textContent = (`影像id：${cover.id}`)
 	attributes.classList.add("cover-stand");
 	attributes.style.pointerEvents = "none";
 	new_cover.appendChild(attributes);
@@ -46,14 +46,17 @@ function createCover(cover) {
 const loadBtn = $("#load-btn");
 const scaleCheckbox = document.getElementById("use-scale");
 const standCheckbox = document.getElementById("use-stand");
-const rightTopScale = $$(".right-top-scale");
-const leftBottomScale = $$(".left-bottom-scale");
+const longtitude = $(".camera-longtitude");
+const latitude = $(".camera-latitude");
+const height = $(".camera-height");
 const typeList = document.getElementById("data-type");
-const stand = document.getElementById("stand");
+const horizon = $(".rotate-horizon");
+const vertical = $(".rotate-vertical");
 const coverage = $(".covers");
 
-// 存储图层的数组和存储当前视图坐标的数组
+// 存储图层的数组和存储当前视图坐标的变量
 let covers = [];
+let position;
 
 // 错误信息显示
 const typeError = $("#type-error-msg");
@@ -72,81 +75,94 @@ loadBtn.addEventListener("click", (event) => {
 		typeError.classList.add("error-msg");
 		typeList.style.boxShadow = "0 0 3px red";
 		finish = false;
+	} else if (typeList.value === "image" && $(".selected-result-image").innerHTML == "") {
+		typeError.textContent = "请选择数据";
+		typeError.classList.add("error-msg");
+		$(".search-box-image").style.boxShadow = "0 0 3px red";
 	}
-	if (stand.value === "unchosen" && standCheckbox.checked === false) {
-		standError.textContent = "请选择视角";
+	if ((horizon.value == "" || vertical.value == "") && standCheckbox.checked === false) {
+		standError.textContent = "请完整填写视角";
 		standError.classList.add("error-msg");
-		stand.style.boxShadow = "0 0 3px red";
+		horizon.style.boxShadow = "0 0 3px red";
+		vertical.style.boxShadow = "0 0 3px red";
 		finish = false;
 	}
-	if ((leftBottomScale[0].value == 0 || leftBottomScale[1].value == 0 || rightTopScale[0].value == 0 || rightTopScale[1].value == 0) && scaleCheckbox.checked === false) {
+	if ((latitude.value == "" || longtitude.value == "" || height.value == "") && scaleCheckbox.checked === false) {
 		scaleError.textContent = "请完整填写空间范围";
 		scaleError.classList.add("error-msg");
-		for (let element of leftBottomScale) {element.style.boxShadow = "0 0 3px red";}
-		for (let element of rightTopScale) {element.style.boxShadow = "0 0 3px red";}
+		latitude.style.boxShadow = "0 0 3px red";
+		longtitude.style.boxShadow = "0 0 3px red";
+		height.style.boxShadow = "0 0 3px red";
 		finish = false;
 	}
 
 	// 显示错误信息后调整高度，或者添加标签
 	if (finish) {
 		typeError.textContent = scaleError.textContent = standError.textContent = "";
+		$(".search-box-image").style.boxShadow = "";
 		typeList.style.boxShadow = "0 0 3px gray";
-		stand.style.boxShadow = "0 0 3px gray";
-		for (let element of leftBottomScale) {element.style = "";}
-		for (let element of rightTopScale) {element.style = "";}
+		vertical.style.boxShadow = "0 0 3px gray";
+		horizon.style.boxShadow = "0 0 3px gray";
+		latitude.style = "";
+		longtitude.style = "";
+		height.style = "";
 		if (typeList.value === "image") {
 			covers.push(new DataSet($(".selected-result-image").dataset.id, $(".selected-result-image").dataset.name));
 		} else if (typeList.value === "terrain") {
 		}
+		// 添加标签和图层
 		createCover(covers[covers.length - 1]);
 
 		// 更改位置
 		if (!scaleCheckbox.checked && !standCheckbox.checked) {
+			position = Cesium.Cartesian3.fromDegrees(longtitude.value, latitude.value, height.value);
 			viewer.camera.flyTo({
-				destination: new Cesium.Rectangle(leftBottomScale[0].value/180, leftBottomScale[1].value/180,
-											rightTopScale[0].value/180, rightTopScale[1].value/180),
+				destination: position,
 				orientation: {
-					heading: Cesium.Math.toRadians(0.0),
-					pitch: Cesium.Math.toRadians(-15.0)
+					heading: Cesium.Math.toRadians(horizon.value),
+					pitch: Cesium.Math.toRadians(vertical.value)
 				}
 			})
 		} else if (!scaleCheckbox.checked) {
 			viewer.camera.flyTo({
-				destination: new Cesium.Rectangle(leftBottomScale[0].value/180, leftBottomScale[1].value/180,
-											rightTopScale[0].value/180, rightTopScale[1].value/180),
+					destination: Cesium.Cartesian3.fromDegrees(longtitude.value, latitude.value, height.value),
 				})
 		}
 
 		// 清空表单
 		$(".selected-result-image").style.display = "none";
 		$(".selected-result-terrain").style.display = "none";
-		stand.disabled = false;
+		horizon.disabled = false;
+		vertical.disabled = false;
+		latitude.disabled = false;
+		longtitude.disabled = false;
+		height.disabled = false;
 		$("form").reset();
 	} else {
-		$(".row-resize-bar").style.height = "400px";
+		$(".row-resize-bar").style.height = "500px";
 	}
 })
 
 // 两个选择按钮事件，禁用功能
 scaleCheckbox.addEventListener("click", (event) => {
 	if (event.target.checked === true) {
-		for (let element of leftBottomScale) {
-			element.disabled = true;
-		}
-		for (let element of rightTopScale) {
-			element.disabled = true;
-		}
+		latitude.disabled = true;
+		longtitude.disabled = true;
+		height.disabled = true;
 	} else {
-		for (let element of leftBottomScale) {element.disabled = false;}
-		for (let element of rightTopScale) {element.disabled = false;}
+		latitude.disabled = false;
+		longtitude.disabled = false;
+		height.disabled = false;
 	}
 })
 
 standCheckbox.addEventListener("click", (event) => {
 	if (event.target.checked === true) {
-		stand.disabled = true;
+		horizon.disabled = true;
+		vertical.disabled = true;
 	} else {
-		stand.disabled = false;
+		horizon.disabled = false;
+		vertical.disabled = false;
 	}
 })
 
@@ -212,13 +228,15 @@ coverage.addEventListener("drop", (event) => {
 	dragIndex = viewer.imageryLayers.length - dragIndex - 1;
 	enterIndex = viewer.imageryLayers.length - enterIndex - 1;
 	const dragLayer = viewer.imageryLayers.get(dragIndex);
-	const enterLayer = viewer.imageryLayers.get(enterIndex);
 	viewer.imageryLayers.remove(dragLayer, false);
-	viewer.imageryLayers.add(dragLayer, enterIndex);
-	viewer.imageryLayers.remove(enterLayer, false);
-	viewer.imageryLayers.add(enterLayer, dragIndex);
+	if (dragIndex < enterIndex) {
+		viewer.imageryLayers.add(dragLayer, enterIndex + 1);
+	} else {
+		viewer.imageryLayers.add(dragLayer, enterIndex);
+	}
 })
 
+let focusObj, focusIndex;
 // 右键菜单
 function onContentMenu(event) {
 	event.preventDefault();
@@ -229,6 +247,10 @@ function onContentMenu(event) {
 	menuObj.style.left = event.clientX + "px";
 	menuObj.style.top = event.clientY + "px";
 	focusObj = event.target;
+	const coverList = $$(".cover");
+	coverList.forEach((element, index) => {
+		if (element === event.target) focusIndex = index;
+	})
 } 
 
 // 关闭菜单
@@ -237,12 +259,16 @@ window.onclick = (event) => {
 	menuObj.style.display = "none";
 }
 
-let focusObj;
-
 // 删除
 const deleteBtn = $("#delete");
 deleteBtn.addEventListener("click", (event) => {
 	focusObj.remove();
+	viewer.imageryLayers.remove(viewer.imageryLayers.get(viewer.imageryLayers.length - focusIndex - 1));
+})
+
+// 切换透明度
+$(".range-bar").addEventListener("change", (e) => {
+	viewer.imageryLayers.get(viewer.imageryLayers.length - focusIndex - 1).alpha = e.target.value / 100;
 })
 
 // 工具显示状态
@@ -297,7 +323,7 @@ function changeDisplay(State) {
 	}
 }
 
-// 交换上下显示
+// 交换上下工具显示
 function exchange() {
 	const upper = $(".upper");
 	const lower = $(".lower");
@@ -363,4 +389,3 @@ $(".search-box-terrain").addEventListener("keyup", (e) => {
 			} else
 				element.style.display = "none";
 })
-

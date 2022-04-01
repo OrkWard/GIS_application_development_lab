@@ -273,7 +273,7 @@ select {
 	background-color: white;
 	box-shadow: 0 0 5px gray;
 	border-radius: 4px;
-	width: 50px;
+	width: 200px;
 	padding: 5px;
 	display: none;
 }
@@ -327,4 +327,8 @@ canvas {
 
 .selected-result-image, .selected-result-terrain {
 
+}
+
+.menu-item {
+	padding: 5px;
 }

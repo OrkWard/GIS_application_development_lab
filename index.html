@@ -42,12 +42,13 @@
 							<div class="selected-result-terrain"></div>
 							
 							<!--选择位置-->
-							<p class="form-item">空间范围：</p>
+							<p class="form-item">空间位置：</p>
 							<div id="scale-error-msg"></div>
-							<label class="child-item" >左下角经纬度</label>
-							<input type="text" class="textarea left-bottom-scale"/><label>，</label><input type="text" class="textarea left-bottom-scale"/><br />
-							<label class="child-item">右上角经纬度</label>
-							<input type="text" class="textarea right-top-scale"/><label>，</label><input type="text" class="textarea right-top-scale"/><br />
+							<label class="child-item">中心经纬度：</label>
+							<input type="text" class="textarea camera-longtitude"/><label>，</label><input type="text" class="textarea camera-latitude"/><br />
+							<label class="child-item">高度：</label>
+							<input type="text" class="textarea camera-height"/>
+							<br/>
 							<input type="checkbox" class="checkbox" id="use-scale"/>
 							<label class="checktext">使用当前所处的位置</label><br />
 							<br>
@@ -55,11 +56,12 @@
 							<!--选择视角-->
 							<label class="form-item">视角：</label>
 							<div id="stand-error-msg"></div>
-							<select id="stand">
-								<option value="unchosen">未选择</option>
-								<option value="direct1">视角1</option>
-								<option value="direct2">视角2</option>
-							</select><br />
+							<label class="child-item">自北向顺时针旋转：</label>
+							<input type="text" class="textarea rotate-horizon"/>
+							<br>
+							<label class="child-item">水平向上旋转：</label>
+							<input type="text" class="textarea rotate-vertical"/>
+							<br />
 							<input type="checkbox" class="checkbox" id="use-stand"/>
 							<label class="checktext">使用默认视角</label><br />
 							<button id="load-btn">加载</button>
@@ -86,7 +88,11 @@
 		</div>
 		<nav>加载地图数据的简单工具组</nav>
 		<div id="menu">
-			<div id="delete">删除</div>
+			<div class="menu-item" id="delete">删除</div>
+			<div class="menu-item" id="alpha">
+				透明度
+				<input type="range" min="0" max="100" step="0.01" class="range-bar">
+			</div>
 		</div>
 		<script type="text/javascript" src="./main.js"></script>
 		<script type="text/javascript" src="./globe.js"></script>
