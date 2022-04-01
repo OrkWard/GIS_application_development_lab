@@ -1,4 +1,3 @@
-// 覆盖Jquery自带的$变量
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => document.querySelectorAll(selector);
 
@@ -17,28 +16,27 @@ function createCover(cover) {
 
 	// 创建图层名
 	attributes = document.createElement("p");
-	attributes.textContent = (`图层${covers.length}${cover.dataType}`);
+	attributes.textContent = (`${cover.name}`);
 	attributes.classList.add("cover-name");
 	attributes.style.pointerEvents = "none";
 	new_cover.appendChild(attributes);
 	
 	// 创建图层站位
 	attributes = document.createElement("p");
-	if (cover.stand === undefined) {
-		attributes.textContent = "无站位";
-	} else {
-		attributes.textContent = (`站位：${cover.stand}`)
-	}
+	attributes.textContent = (`图层id：${cover.id}`)
 	attributes.classList.add("cover-stand");
 	attributes.style.pointerEvents = "none";
 	new_cover.appendChild(attributes);
 	new_cover.classList.add("cover");
 
-	// 创建标签属性以存储顺序
-	new_cover.dataset.sortIndex = covers.length;
+	// 创建标签属性以存储id
+	new_cover.dataset.id = cover.id;
 
 	// 允许拖拽
 	new_cover.draggable = true;
+
+	// 将图层插入最底端
+	viewer.imageryLayers.addImageryProvider(new Cesium.IonImageryProvider({assetId: cover.id}), 0);
 
 	new_cover.oncontextmenu = onContentMenu;
 	coverage.appendChild(new_cover);
@@ -100,15 +98,36 @@ loadBtn.addEventListener("click", (event) => {
 			covers.push(new DataSet($(".selected-result-image").dataset.id, $(".selected-result-image").dataset.name));
 		} else if (typeList.value === "terrain") {
 		}
-		$("form").reset();
+		createCover(covers[covers.length - 1]);
+
+		// 更改位置
+		if (!scaleCheckbox.checked && !standCheckbox.checked) {
+			viewer.camera.flyTo({
+				destination: new Cesium.Rectangle(leftBottomScale[0].value/180, leftBottomScale[1].value/180,
+											rightTopScale[0].value/180, rightTopScale[1].value/180),
+				orientation: {
+					heading: Cesium.Math.toRadians(0.0),
+					pitch: Cesium.Math.toRadians(-15.0)
+				}
+			})
+		} else if (!scaleCheckbox.checked) {
+			viewer.camera.flyTo({
+				destination: new Cesium.Rectangle(leftBottomScale[0].value/180, leftBottomScale[1].value/180,
+											rightTopScale[0].value/180, rightTopScale[1].value/180),
+				})
+		}
+
+		// 清空表单
+		$(".selected-result-image").style.display = "none";
+		$(".selected-result-terrain").style.display = "none";
 		stand.disabled = false;
-		// createCover(covers[covers.length - 1]);
+		$("form").reset();
 	} else {
 		$(".row-resize-bar").style.height = "400px";
 	}
 })
 
-// 两个选择按钮事件
+// 两个选择按钮事件，禁用功能
 scaleCheckbox.addEventListener("click", (event) => {
 	if (event.target.checked === true) {
 		for (let element of leftBottomScale) {
@@ -179,6 +198,8 @@ coverage.addEventListener("dragleave", (event) => {
 coverage.addEventListener("drop", (event) => {
 	event.preventDefault();
 	event.target.classList.remove("hold");
+
+	// 调整标签顺序
 	if (dragIndex < enterIndex) {
 		dragObj.remove();
 		enterObj.after(dragObj);
@@ -186,8 +207,19 @@ coverage.addEventListener("drop", (event) => {
 		dragObj.remove();
 		enterObj.before(dragObj);
 	}
+
+	// 调整图层顺序
+	dragIndex = viewer.imageryLayers.length - dragIndex - 1;
+	enterIndex = viewer.imageryLayers.length - enterIndex - 1;
+	const dragLayer = viewer.imageryLayers.get(dragIndex);
+	const enterLayer = viewer.imageryLayers.get(enterIndex);
+	viewer.imageryLayers.remove(dragLayer, false);
+	viewer.imageryLayers.add(dragLayer, enterIndex);
+	viewer.imageryLayers.remove(enterLayer, false);
+	viewer.imageryLayers.add(enterLayer, dragIndex);
 })
 
+// 右键菜单
 function onContentMenu(event) {
 	event.preventDefault();
 	const menuObj = document.getElementById("menu");

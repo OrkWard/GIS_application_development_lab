@@ -176,6 +176,7 @@ assets.forEach((element) => {
 		image.classList.add("search-result");
 		image.dataset.id = element.id;
 		image.dataset.type = element.type;
+		image.dataset.name = element.name;
 		image.addEventListener("click", (e) => {
 			const selected = $(".selected-result-image");
 			$(".search-box-image").style.display = "none";

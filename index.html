@@ -5,7 +5,6 @@
 		<title>WebGIS</title>
 		<link rel="stylesheet" type="text/css" href="./style.css" />
 		<script src="https://cesium.com/downloads/cesiumjs/releases/1.91/Build/Cesium/Cesium.js"></script>
-		<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
 		<link href="https://cesium.com/downloads/cesiumjs/releases/1.91/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
 	</head>
 	<body>
@@ -47,7 +46,7 @@
 							<div id="scale-error-msg"></div>
 							<label class="child-item" >左下角经纬度</label>
 							<input type="text" class="textarea left-bottom-scale"/><label>，</label><input type="text" class="textarea left-bottom-scale"/><br />
-							<label class="child-item">右下角经纬度</label>
+							<label class="child-item">右上角经纬度</label>
 							<input type="text" class="textarea right-top-scale"/><label>，</label><input type="text" class="textarea right-top-scale"/><br />
 							<input type="checkbox" class="checkbox" id="use-scale"/>
 							<label class="checktext">使用当前所处的位置</label><br />
@@ -62,7 +61,7 @@
 								<option value="direct2">视角2</option>
 							</select><br />
 							<input type="checkbox" class="checkbox" id="use-stand"/>
-							<label class="checktext">使用当前视角</label><br />
+							<label class="checktext">使用默认视角</label><br />
 							<button id="load-btn">加载</button>
 						</form>
 					</div>
