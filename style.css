@@ -304,3 +304,27 @@ canvas {
 #cesium-container {
 	height: -webkit-fill-available;
 }
+
+.search-box-image, .search-box-terrain {
+	padding: 5px;
+	width: -webkit-fill-available;
+	margin-top: 3px;
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+	box-shadow: none;
+}
+
+.search-result-image, .search-result-terrain {
+	border: 1px solid;
+	overflow: scroll;
+	height: 100px;
+}
+
+.search-result {
+	border: var(--line) 1px solid;
+	padding: 2px;
+}
+
+.selected-result-image, .selected-result-terrain {
+
+}

@@ -33,8 +33,14 @@
 							<br/>
 
 							<!--搜索影像数据进行添加，在数据类型为image时显示-->
-							<input type="text" class="textarea search-box" style="display:none" placeholder="输入进行搜索">
-							<ul class="search-result" style="display:none"></ul>
+							<input type="text" class="textarea search-box-image" style="display:none" placeholder="输入进行搜索">
+							<div class="search-result-image" style="display:none"></div>
+							<div class="selected-result-image"></div>
+
+							<!--搜索地形数据更换，在数据类型为terrain时显示-->
+							<input type="text" class="textarea search-box-terrain" style="display:none" placeholder="输入进行搜索">
+							<div class="search-result-terrain" style="display:none"></div>
+							<div class="selected-result-terrain"></div>
 							
 							<!--选择位置-->
 							<p class="form-item">空间范围：</p>
@@ -72,7 +78,7 @@
 			</div>
 			<div class="right">
 				<!--Cesium容器-->
-				<!-- <div id="cesium-container"></div> -->
+				<div id="cesium-container"></div>
 			</div>
 		</div>
 		<div class="tools-bar">

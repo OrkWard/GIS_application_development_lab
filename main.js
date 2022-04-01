@@ -4,14 +4,9 @@ const $$ = (selector) => document.querySelectorAll(selector);
 
 // 存储数据的类
 class DataSet {
-	constructor(dataType, useStand, stand) {
-		this.dataType = dataType;
-		this.scale = [...globalScale];
-		if (!useStand) {
-			this.stand = stand;
-		} else {
-			this.stand = undefined;
-		}
+	constructor(id, name) {
+		this.id = id;
+		this.name = name;
 	}
 }
 
@@ -61,7 +56,6 @@ const coverage = $(".covers");
 
 // 存储图层的数组和存储当前视图坐标的数组
 let covers = [];
-let globalScale;
 
 // 错误信息显示
 const typeError = $("#type-error-msg");
@@ -71,6 +65,7 @@ const standError = $("#stand-error-msg");
 // 加载按钮点击事件
 loadBtn.addEventListener("click", (event) => {
 	event.preventDefault();
+	// 是否错误
 	let finish = true;
 
 	// 显示错误信息
@@ -81,13 +76,12 @@ loadBtn.addEventListener("click", (event) => {
 		finish = false;
 	}
 	if (stand.value === "unchosen" && standCheckbox.checked === false) {
-		standError.textContent = "请选择站位";
+		standError.textContent = "请选择视角";
 		standError.classList.add("error-msg");
 		stand.style.boxShadow = "0 0 3px red";
 		finish = false;
 	}
-	if ((leftBottomScale[0].value == 0 || leftBottomScale[1].value == 0 || rightTopScale[0].value == 0 || rightTopScale[1].value == 0) && scaleCheckbox.checked === false || 
-		globalScale === undefined && scaleCheckbox.checked === true) {
+	if ((leftBottomScale[0].value == 0 || leftBottomScale[1].value == 0 || rightTopScale[0].value == 0 || rightTopScale[1].value == 0) && scaleCheckbox.checked === false) {
 		scaleError.textContent = "请完整填写空间范围";
 		scaleError.classList.add("error-msg");
 		for (let element of leftBottomScale) {element.style.boxShadow = "0 0 3px red";}
@@ -102,13 +96,13 @@ loadBtn.addEventListener("click", (event) => {
 		stand.style.boxShadow = "0 0 3px gray";
 		for (let element of leftBottomScale) {element.style = "";}
 		for (let element of rightTopScale) {element.style = "";}
-		if (scaleCheckbox.checked === false) {
-			globalScale = [leftBottomScale[0].value, leftBottomScale[1].value, rightTopScale[0].value, rightTopScale[1].value];
+		if (typeList.value === "image") {
+			covers.push(new DataSet($(".selected-result-image").dataset.id, $(".selected-result-image").dataset.name));
+		} else if (typeList.value === "terrain") {
 		}
-		covers.push(new DataSet(typeList.value, standCheckbox.checked, stand.value));
 		$("form").reset();
 		stand.disabled = false;
-		createCover(covers[covers.length - 1]);
+		// createCover(covers[covers.length - 1]);
 	} else {
 		$(".row-resize-bar").style.height = "400px";
 	}
@@ -297,15 +291,44 @@ coverageButton.addEventListener("click", (event) => {
 $("#data-type").addEventListener("change", (event) => {
 	event.preventDefault();
 	if (event.target.value === "unchosen") {
-		$(".search-box").style.display = "none";
-		$(".search-result").style.display = "none";
+		$(".search-box-image").style.display = "none";
+		$(".search-result-image").style.display = "none";
+		$(".selected-result-image").style.display = "none";
+		$(".search-box-terrain").style.display = "none";
+		$(".search-result-terrain").style.display = "none";
+		$(".selected-result-terrain").style.display = "none";
 	} else if (event.target.value === "image") {
-		$(".search-box").style.display = "";
-		$(".search-result").style.display = "";
-	} else if (event.target.vaule === "terrain") {
-		$(".search-box").style.display = "none";
-		$(".search-result").style.display = "none";
+		$(".search-box-image").style.display = "";
+		$(".search-result-image").style.display = "";
+		$(".search-box-terrain").style.display = "none";
+		$(".search-result-terrain").style.display = "none";
+		$(".selected-result-terrain").style.display = "none";
+	} else if (event.target.value === "terrain") {
+		$(".search-box-image").style.display = "none";
+		$(".search-result-image").style.display = "none";
+		$(".selected-result-image").style.display = "none";
+		$(".search-box-terrain").style.display = "";
+		$(".search-result-terrain").style.display = "";
 	}
 })
 
 // 搜索
+$(".search-box-image").addEventListener("keyup", (e) => {
+	const images = $$(".search-result");
+	for (let element of images) 
+		if (element.dataset.type === "IMAGERY")
+			if (element.innerHTML.toUpperCase().indexOf(e.target.value.toUpperCase()) > -1) {
+				element.style.display = "";
+			} else
+				element.style.display = "none";
+})
+$(".search-box-terrain").addEventListener("keyup", (e) => {
+	const terrains = $$(".search-result");
+	for (let element of terrains) 
+		if (element.dataset.type === "TERRAIN")
+			if (element.innerHTML.toUpperCase().indexOf(e.target.value.toUpperCase()) > -1) {
+				element.style.display = "";
+			} else
+				element.style.display = "none";
+})
+
