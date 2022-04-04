@@ -15,12 +15,12 @@ $(".cesium-widget-credits").style.display = "none";
 viewer.imageryLayers.remove(viewer.imageryLayers.get(0), true);
 
 // 添加地形
-let terrainProvider = new Cesium.CesiumTerrainProvider({
-	url: Cesium.IonResource.fromAssetId(1),
-	requestWaterMask: true,
-	requestVertexNormals: true,
-});
-viewer.terrainProvider = terrainProvider;
+// let terrainProvider = new Cesium.CesiumTerrainProvider({
+// 	url: Cesium.IonResource.fromAssetId(1),
+// 	requestWaterMask: true,
+// 	requestVertexNormals: true,
+// });
+// viewer.terrainProvider = terrainProvider;
 
 const assets = [
 	{

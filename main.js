@@ -53,6 +53,7 @@ const typeList = document.getElementById("data-type");
 const horizon = $(".rotate-horizon");
 const vertical = $(".rotate-vertical");
 const coverage = $(".covers");
+const terrainCheckbox = $("#act-terrain");
 
 // 存储图层的数组和存储当前视图坐标的变量
 let covers = [];
@@ -79,7 +80,12 @@ loadBtn.addEventListener("click", (event) => {
 		typeError.textContent = "请选择数据";
 		typeError.classList.add("error-msg");
 		$(".search-box-image").style.boxShadow = "0 0 3px red";
+	} else if (typeList.value === "terrain" && $(".selected-result-terrain").innerHTML == "") {
+		typeError.textContent = "请选择数据";
+		typeError.classList.add("error-msg");
+		$(".search-box-image").style.boxShadow = "0 0 3px red";
 	}
+
 	if ((horizon.value == "" || vertical.value == "") && standCheckbox.checked === false) {
 		standError.textContent = "请完整填写视角";
 		standError.classList.add("error-msg");
@@ -98,8 +104,10 @@ loadBtn.addEventListener("click", (event) => {
 
 	// 显示错误信息后调整高度，或者添加标签
 	if (finish) {
+		// 关闭错误样式
 		typeError.textContent = scaleError.textContent = standError.textContent = "";
 		$(".search-box-image").style.boxShadow = "";
+		$(".search-box-terrain").style.boxShadow = "";
 		typeList.style.boxShadow = "0 0 3px gray";
 		vertical.style.boxShadow = "0 0 3px gray";
 		horizon.style.boxShadow = "0 0 3px gray";
@@ -108,10 +116,20 @@ loadBtn.addEventListener("click", (event) => {
 		height.style = "";
 		if (typeList.value === "image") {
 			covers.push(new DataSet($(".selected-result-image").dataset.id, $(".selected-result-image").dataset.name));
+
+			// 添加标签和图层
+			createCover(covers[covers.length - 1]);
 		} else if (typeList.value === "terrain") {
+			if (terrainCheckbox.checked === false)
+				viewer.terrainProvider = new Cesium.EllipsoidTerrainProvider();
+			else {
+				viewer.terrainProvider = new Cesium.CesiumTerrainProvider({
+					url: Cesium.IonResource.fromAssetId($(".selected-result-terrain").dataset.id),
+					requestVertexNormals: $("#act-light").checked,
+					requestWaterMask: $("#act-water").checked
+				})
+			}
 		}
-		// 添加标签和图层
-		createCover(covers[covers.length - 1]);
 
 		// 更改位置
 		if (!scaleCheckbox.checked && !standCheckbox.checked) {
@@ -132,18 +150,20 @@ loadBtn.addEventListener("click", (event) => {
 		// 清空表单
 		$(".selected-result-image").style.display = "none";
 		$(".selected-result-terrain").style.display = "none";
+		$(".search-box-terrain").disabled = false;
 		horizon.disabled = false;
 		vertical.disabled = false;
 		latitude.disabled = false;
 		longtitude.disabled = false;
 		height.disabled = false;
 		$("form").reset();
+		$(".search-image").style.display = $(".search-terrain").style.display = "none";
 	} else {
-		$(".row-resize-bar").style.height = "500px";
+		$(".row-resize-bar").style.height = "600px";
 	}
 })
 
-// 两个选择按钮事件，禁用功能
+// 三个选择按钮事件，禁用功能
 scaleCheckbox.addEventListener("click", (event) => {
 	if (event.target.checked === true) {
 		latitude.disabled = true;
@@ -155,7 +175,6 @@ scaleCheckbox.addEventListener("click", (event) => {
 		height.disabled = false;
 	}
 })
-
 standCheckbox.addEventListener("click", (event) => {
 	if (event.target.checked === true) {
 		horizon.disabled = true;
@@ -163,6 +182,16 @@ standCheckbox.addEventListener("click", (event) => {
 	} else {
 		horizon.disabled = false;
 		vertical.disabled = false;
+	}
+})
+terrainCheckbox.addEventListener("click", (e) => {
+	if (e.target.checked === false) {
+		$(".search-box-terrain").disabled = true; 
+		$(".search-result-terrain").style.display = "none";
+	}
+	else {
+		$(".search-box-terrain").disabled = false; 
+		$(".search-result-terrain").style.display = "";
 	}
 })
 
@@ -349,24 +378,20 @@ coverageButton.addEventListener("click", (event) => {
 $("#data-type").addEventListener("change", (event) => {
 	event.preventDefault();
 	if (event.target.value === "unchosen") {
-		$(".search-box-image").style.display = "none";
-		$(".search-result-image").style.display = "none";
-		$(".selected-result-image").style.display = "none";
-		$(".search-box-terrain").style.display = "none";
-		$(".search-result-terrain").style.display = "none";
-		$(".selected-result-terrain").style.display = "none";
+		$(".search-image").style.display = "none";
+		$(".search-terrain").style.display = "none";
 	} else if (event.target.value === "image") {
+		$(".search-image").style.display = "";
 		$(".search-box-image").style.display = "";
 		$(".search-result-image").style.display = "";
-		$(".search-box-terrain").style.display = "none";
-		$(".search-result-terrain").style.display = "none";
-		$(".selected-result-terrain").style.display = "none";
-	} else if (event.target.value === "terrain") {
-		$(".search-box-image").style.display = "none";
-		$(".search-result-image").style.display = "none";
+		$(".search-terrain").style.display = "none";
 		$(".selected-result-image").style.display = "none";
-		$(".search-box-terrain").style.display = "";
+	} else if (event.target.value === "terrain") {
+		$(".search-image").style.display = "none";
+		$(".search-terrain").style.display = "";
 		$(".search-result-terrain").style.display = "";
+		$(".search-box-terrain").style.display = "";
+		$(".selected-result-terrain").style.display = "none";
 	}
 })
 

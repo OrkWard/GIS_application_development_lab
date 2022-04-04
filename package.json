@@ -1,5 +1,10 @@
 {
-  "dependencies": {
-    "cesium": "^1.91.0"
+  "name": "cesium",
+  "devDependencies": {
+    "request-promise": "4.2.6"
+  },
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build --public-url . index.html"
   }
 }
