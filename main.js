@@ -24,7 +24,7 @@ function createCover(cover) {
 	// 创建图层id
 	attributes = document.createElement("p");
 	attributes.textContent = (`影像id：${cover.id}`)
-	attributes.classList.add("cover-stand");
+	attributes.classList.add("cover-id");
 	attributes.style.pointerEvents = "none";
 	new_cover.appendChild(attributes);
 	new_cover.classList.add("cover");
@@ -43,7 +43,6 @@ function createCover(cover) {
 }
 
 // 用到的标签选择器
-const loadBtn = $("#load-btn");
 const scaleCheckbox = document.getElementById("use-scale");
 const standCheckbox = document.getElementById("use-stand");
 const longtitude = $(".camera-longtitude");
@@ -65,7 +64,7 @@ const scaleError = $("#scale-error-msg");
 const standError = $("#stand-error-msg");
 
 // 加载按钮点击事件
-loadBtn.addEventListener("click", (event) => {
+$("#load-grid-button").addEventListener("click", (event) => {
 	event.preventDefault();
 	// 是否错误
 	let finish = true;
@@ -156,7 +155,7 @@ loadBtn.addEventListener("click", (event) => {
 		latitude.disabled = false;
 		longtitude.disabled = false;
 		height.disabled = false;
-		$("form").reset();
+		$("#load-grid-tool").reset();
 		$(".search-image").style.display = $(".search-terrain").style.display = "none";
 	} else {
 		$(".row-resize-bar").style.height = "600px";
@@ -223,7 +222,7 @@ coverage.addEventListener("dragexit", (event) => {
 
 coverage.addEventListener("dragenter", (event) => {
 	if (event.target.className === "cover") {
-		event.target.classList.add("hold");
+		event.target.classList.add("cover-hold");
 	}
 	enterObj = event.target;
 	const dragList = $$(".cover");
@@ -235,14 +234,14 @@ coverage.addEventListener("dragenter", (event) => {
 })
 
 coverage.addEventListener("dragleave", (event) => {
-	if (/hold/.test(event.target.classList)) {
-		event.target.classList.remove("hold");
+	if (/cover-hold/.test(event.target.classList)) {
+		event.target.classList.remove("cover-hold");
 	}
 })
 
 coverage.addEventListener("drop", (event) => {
 	event.preventDefault();
-	event.target.classList.remove("hold");
+	event.target.classList.remove("cover-hold");
 
 	// 调整标签顺序
 	if (dragIndex < enterIndex) {
@@ -265,6 +264,7 @@ coverage.addEventListener("drop", (event) => {
 	}
 })
 
+// 被拖动的标签和位置
 let focusObj, focusIndex;
 // 右键菜单
 function onContentMenu(event) {
@@ -302,77 +302,81 @@ $(".range-bar").addEventListener("change", (e) => {
 
 // 工具显示状态
 let openToolNumber = 2;
-class Status {
-	constructor(onDisplay, position) {
-		this.onDisplay = onDisplay;
-		this.position = position;
-	}
-}
-
-const stateLoad = new Status(true, "upper");
-const stateCoverage = new Status(true, "lower");
-const loadButton = $("#load-tool");
-const coverageButton = $("#coverage-tool");
-
-// 改变显示状态
-function changeDisplay(State) {
-	switch (openToolNumber) {
-		case 0:
-			if (State.position === "upper") {
-				exchange();
-			}
-			$(".left").style.display = "";
-			State.onDisplay = true;
-			openToolNumber = 1;
-			break;
-		case 1:
-			if (State.onDisplay) {
-				$(".left").style.display = "none";
-				openToolNumber = 0;
-				State.onDisplay = false;
-			} else {
-				$(".upper").style.display = "";
-				exchange();
-				openToolNumber = 2;
-				State.onDisplay = true;
-			}
-			break;
-		case 2:
-			if (State.onDisplay) {
-				if (State.position === "upper") {
-					$(".upper").style.display = "none";
-					State.onDisplay = false;
-				} else {
-					exchange();
-					$(".upper").style.display = "none";
-					State.onDisplay = false;
-				}
-				openToolNumber = 1;
-			}
-	}
-}
+let focusTool;
+const tools = $$(".tool");
+const upper = $(".upper");
+const lower = $(".lower");
+const toolsColletction = $("#tools-collection");
+tools.forEach((element) => {
+	element.dataset.onDisplay = false;
+})
 
 // 交换上下工具显示
 function exchange() {
-	const upper = $(".upper");
-	const lower = $(".lower");
 	const upperContent = upper.lastElementChild;
 	const lowerContext = lower.firstElementChild;
-	upperContent.remove();
-	lowerContext.remove();
 	upper.appendChild(lowerContext);
 	lower.appendChild(upperContent);
-	upperContent.classList.remove("upper-content");
-	lowerContext.classList.add("upper-content");
+	upperContent.classList.remove("row-resize-content");
+	lowerContext.classList.add("row-resize-content");
 	[stateCoverage.position, stateLoad.position] = [stateLoad.position, stateCoverage.position];
 }
 
-loadButton.addEventListener("click", (event) => {
-	changeDisplay(stateLoad);
-});
-coverageButton.addEventListener("click", (event) => {
-	changeDisplay(stateCoverage);
-});
+// 改变显示状态
+function changeDisplay(e) {
+	tools.forEach((element) => {
+		if (element.dataset.toolId === e.target.toolId) focusTool = element;
+	})
+	switch (openToolNumber) {
+		case 0:
+			$(".left").style.display = "";
+			upper.style.display = "none";
+			lower.appendChild(focusTool);
+			focusTool.dataset.onDisplay = true;
+			openToolNumber = 1;
+			break;
+		case 1:
+			if (lower.lastElementChild.dataset.toolId === e.target.toolId) focusTool = lower.lastElementChild;
+			if (focusTool.dataset.onDisplay) {
+				lower.classList.remove("row-resize-content");
+				toolsColletction.appendChild(lower.lastElementChild);
+				lower.style.display = "none";
+				openToolNumber = 0;
+				focusTool.dataset.onDisplay = false;
+			} else {
+				upper.appendChild(focusTool);
+				exchange();
+				upper.style.display = "";
+				focusTool.dataset.onDisplay = true;
+				openToolNumber = 2;
+			}
+			break;
+		case 2:
+			if (upper.lastElementChild.dataset.toolId === e.target.toolId) focusTool = upper.lastElementChild;
+			if (lower.lastElementChild.dataset.toolId === e.target.toolId) focusTool = lower.lastElementChild;
+			if (focusTool.dataset.onDisplay) {
+				if (!upper.lastElementChild.toolId === focusTool.dataset.toolId) {
+					exchange();
+				}
+				upper.style.display = "none";
+				focusTool.dataset.onDisplay = false;
+				focusTool.classList.remove("row-resize-content");
+				toolsColletction.appendChild(focusTool);
+				openToolNumber = 1;
+			} else {
+				toolsColletction.appendChild(lower.lastElementChild);
+				lower.appendChild(focusTool);
+				focusTool.dataset.onDisplay = true;
+			}
+			break;
+	}
+	console.log(focusTool);
+}
+
+$$(".tools-bar-icon").forEach((element) => {element.addEventListener("click", changeDisplay)})
+upper.appendChild($("#load-grid-tool"));
+upper.lastElementChild.classList.add("row-resize-content");
+lower.appendChild($("#coverage-tool"));
 
 // 切换数据加载面板样式
 $("#data-type").addEventListener("change", (event) => {
@@ -393,24 +397,4 @@ $("#data-type").addEventListener("change", (event) => {
 		$(".search-box-terrain").style.display = "";
 		$(".selected-result-terrain").style.display = "none";
 	}
-})
-
-// 搜索
-$(".search-box-image").addEventListener("keyup", (e) => {
-	const images = $$(".search-result");
-	for (let element of images) 
-		if (element.dataset.type === "IMAGERY")
-			if (element.innerHTML.toUpperCase().indexOf(e.target.value.toUpperCase()) > -1) {
-				element.style.display = "";
-			} else
-				element.style.display = "none";
-})
-$(".search-box-terrain").addEventListener("keyup", (e) => {
-	const terrains = $$(".search-result");
-	for (let element of terrains) 
-		if (element.dataset.type === "TERRAIN")
-			if (element.innerHTML.toUpperCase().indexOf(e.target.value.toUpperCase()) > -1) {
-				element.style.display = "";
-			} else
-				element.style.display = "none";
 })

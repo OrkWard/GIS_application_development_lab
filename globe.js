@@ -201,3 +201,22 @@ assets.forEach((element) => {
 	}
 })
 
+// 搜索
+$(".search-box-image").addEventListener("keyup", (e) => {
+	const images = $$(".search-result");
+	for (let element of images) 
+		if (element.dataset.type === "IMAGERY")
+			if (element.innerHTML.toUpperCase().indexOf(e.target.value.toUpperCase()) > -1) {
+				element.style.display = "";
+			} else
+				element.style.display = "none";
+})
+$(".search-box-terrain").addEventListener("keyup", (e) => {
+	const terrains = $$(".search-result");
+	for (let element of terrains) 
+		if (element.dataset.type === "TERRAIN")
+			if (element.innerHTML.toUpperCase().indexOf(e.target.value.toUpperCase()) > -1) {
+				element.style.display = "";
+			} else
+				element.style.display = "none";
+})

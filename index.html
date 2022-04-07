@@ -16,74 +16,10 @@
 					<div class="upper">
 						<div class="row-resize-bar"></div>
 						<div class="row-resize-line"></div>
-						<form class="upper-content" style="padding: 10px;">
-							<img class="tools-icon" src="./images/地图.png"/>
-							<p class="title">加载数据</p>
-							<hr />
-
-							<!--选择数据类型-->
-							<label class="form-item">数据类型：</label>
-							<div id="type-error-msg"></div>
-							<select id="data-type">
-								<option value="unchosen">未选择</option>
-								<option value="image">影像数据</option>
-								<option value="terrain">地形数据</option>
-							</select>
-							<br/>
-
-							<!--搜索影像数据进行添加，在数据类型为image时显示-->
-							<div class="search-image" style="display:none">
-								<input type="text" class="textarea search-box-image" placeholder="输入进行搜索">
-								<div class="search-result-image" ></div>
-								<div class="selected-result-image"></div>
-							</div>
-
-							<!--搜索地形数据更换，在数据类型为terrain时显示-->
-							<div class="search-terrain" style="display:none">
-								<label class="child-item">是否添加地形数据</label>
-								<input type="checkbox" class="checkbox" id="act-terrain" checked> <br/>
-								<input type="text" class="textarea search-box-terrain" placeholder="输入进行搜索">
-								<div class="search-result-terrain" ></div>
-								<div class="selected-result-terrain"></div>
-								<label class="child-item">是否请求地形照明数据：</label>
-								<input type="checkbox" class="checkbox" id="act-light"> <br/>
-								<label class="child-item">是否请求水体效果数据</label>
-								<input type="checkbox" class="checkbox" id="act-water">
-							</div>
-							
-							<!--选择位置-->
-							<p class="form-item">空间位置：</p>
-							<div id="scale-error-msg"></div>
-							<label class="child-item">中心经纬度：</label>
-							<input type="text" class="textarea camera-longtitude"/><label>，</label><input type="text" class="textarea camera-latitude"/><br />
-							<label class="child-item">高度：</label>
-							<input type="text" class="textarea camera-height"/>
-							<br/>
-							<input type="checkbox" class="checkbox" id="use-scale"/>
-							<label class="checktext">使用当前所处的位置</label><br />
-							<br>
-							
-							<!--选择视角-->
-							<label class="form-item">视角：</label>
-							<div id="stand-error-msg"></div>
-							<label class="child-item">自北向顺时针旋转：</label>
-							<input type="text" class="textarea rotate-horizon"/>
-							<br>
-							<label class="child-item">水平向上旋转：</label>
-							<input type="text" class="textarea rotate-vertical"/>
-							<br />
-							<input type="checkbox" class="checkbox" id="use-stand"/>
-							<label class="checktext">使用默认视角</label><br />
-							<button id="load-btn">加载</button>
-						</form>
+						<!--上方工具栏-->
 					</div>
 					<div class="lower">
-						<div class="coverage">
-							<img class="tools-icon" src="./images/图层.png">
-							<p class="title">图层</p>
-							<hr />
-							<div class="covers"></div>
-						</div>
+						<!--下方工具栏-->
 					</div>
 				</div>
 			</div>
@@ -93,8 +29,8 @@
 			</div>
 		</div>
 		<div class="tools-bar">
-			<img class="tools-bar-icon tool" src="./images/地图_white.png" id="load-tool" >
-			<img class="tools-bar-icon tool" src="./images/图层_white.png" id="coverage-tool" >
+			<img class="tools-bar-icon" src="./images/地图_white.png" toolId="grid">
+			<img class="tools-bar-icon" src="./images/图层_white.png" toolId="coverage">
 		</div>
 		<nav>加载地图数据的简单工具组</nav>
 		<div id="menu">
@@ -102,6 +38,76 @@
 			<div class="menu-item" id="alpha">
 				透明度
 				<input type="range" min="0" max="100" step="0.01" class="range-bar">
+			</div>
+		</div>
+		<div id="tools-collection">
+			<!--栅格图像加载工具-->
+			<form id="load-grid-tool" class="tool" toolId="grid">
+				<img class="tools-icon" src="./images/地图.png"/>
+				<p class="title">加载数据</p>
+				<hr />
+
+				<!--选择数据类型-->
+				<label class="form-item">数据类型：</label>
+				<div id="type-error-msg"></div>
+				<select id="data-type">
+					<option value="unchosen">未选择</option>
+					<option value="image">影像数据</option>
+					<option value="terrain">地形数据</option>
+				</select>
+				<br/>
+
+				<!--搜索影像数据进行添加，在数据类型为image时显示-->
+				<div class="search-image" style="display:none">
+					<input type="text" class="textarea search-box-image" placeholder="输入进行搜索">
+					<div class="search-result-image" ></div>
+					<div class="selected-result-image"></div>
+				</div>
+
+				<!--搜索地形数据更换，在数据类型为terrain时显示-->
+				<div class="search-terrain" style="display:none">
+					<label class="checktext">添加地形数据</label>
+					<input type="checkbox" class="checkbox" id="act-terrain" checked> <br/>
+					<input type="text" class="textarea search-box-terrain" placeholder="输入进行搜索">
+					<div class="search-result-terrain" ></div>
+					<div class="selected-result-terrain"></div>
+					<label class="checktext">请求地形照明数据：</label>
+					<input type="checkbox" class="checkbox" id="act-light"> <br/>
+					<label class="checktext">请求水体效果数据</label>
+					<input type="checkbox" class="checkbox" id="act-water">
+				</div>
+				
+				<!--选择位置-->
+				<p class="form-item">空间位置：</p>
+				<div id="scale-error-msg"></div>
+				<label class="child-item">中心经纬度：</label>
+				<input type="text" class="textarea camera-longtitude"/><label>，</label><input type="text" class="textarea camera-latitude"/><br />
+				<label class="child-item">高度：</label>
+				<input type="text" class="textarea camera-height"/>
+				<br/>
+				<input type="checkbox" class="checkbox" id="use-scale"/>
+				<label class="checktext">使用当前所处的位置</label><br />
+				<br>
+				
+				<!--选择视角-->
+				<label class="form-item">视角：</label>
+				<div id="stand-error-msg"></div>
+				<label class="child-item">自北向顺时针旋转：</label>
+				<input type="text" class="textarea rotate-horizon"/>
+				<br>
+				<label class="child-item">水平向上旋转：</label>
+				<input type="text" class="textarea rotate-vertical"/>
+				<br />
+				<input type="checkbox" class="checkbox" id="use-stand"/>
+				<label class="checktext">使用默认视角</label><br />
+				<button id="load-grid-button">加载</button>
+			</form>
+			<!--图层管理工具-->
+			<div id="coverage-tool" tool-id="1" toolId="coverage">
+				<img class="tools-icon" src="./images/图层.png">
+				<p class="title">图层</p>
+				<hr />
+				<div class="covers"></div>
 			</div>
 		</div>
 		<script type="text/javascript" src="./main.js"></script>
