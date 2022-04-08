@@ -256,7 +256,7 @@ select {
 }
 
 /* 单个图层容器 */
-.cover {
+.image-cover, .vector-cover {
 	background-color: var(--darker-background);
 	border-left: 3px solid var(--main-color);
 	margin-bottom: 1px;
@@ -266,7 +266,13 @@ select {
 }
 
 /* 图层容器 */
-.covers {
+#image-covers {
+	margin-top: -9px;
+	margin-bottom: -9px;
+}
+
+/* 矢量图层容器 */
+#vector-covers {
 	margin-top: -9px;
 }
 
@@ -327,6 +333,14 @@ select {
     background-position: left;
     background-size: 27px;
     background-repeat: no-repeat;
+}
+
+/* 右键更多按钮 */
+#pop-up {
+	background-image: url("./images/pop-up.png");
+	background-position: left;
+	background-size: 27px;
+	background-repeat: no-repeat;
 }
 
 /* openlayers使用的容器，已弃用 */

@@ -2,7 +2,7 @@ const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => document.querySelectorAll(selector);
 
 // 存储数据的类
-class DataSet {
+class ImageCover {
 	constructor(id, name) {
 		this.id = id;
 		this.name = name;
@@ -10,7 +10,7 @@ class DataSet {
 }
 
 // 为加载的数据新键一个标签插入coverage下
-function createCover(cover) {
+function createImageCover(cover) {
 	const new_cover = document.createElement("div");
 	let attributes;
 
@@ -27,10 +27,10 @@ function createCover(cover) {
 	attributes.classList.add("cover-id");
 	attributes.style.pointerEvents = "none";
 	new_cover.appendChild(attributes);
-	new_cover.classList.add("cover");
 
 	// 创建标签属性以存储id
 	new_cover.dataset.id = cover.id;
+	new_cover.dataset.type = "image";
 
 	// 允许拖拽
 	new_cover.draggable = true;
@@ -38,6 +38,7 @@ function createCover(cover) {
 	// 将图层插入最底端
 	viewer.imageryLayers.addImageryProvider(new Cesium.IonImageryProvider({assetId: cover.id}), 0);
 
+	new_cover.classList.add("image-cover");
 	new_cover.oncontextmenu = onContentMenu;
 	coverage.appendChild(new_cover);
 }
@@ -51,11 +52,11 @@ const height = $(".camera-height");
 const typeList = document.getElementById("grid-data-type");
 const horizon = $(".rotate-horizon");
 const vertical = $(".rotate-vertical");
-const coverage = $(".covers");
+const coverage = $("#image-covers");
 const terrainCheckbox = $("#act-terrain");
 
 // 存储图层的数组和存储当前视图坐标的变量
-let covers = [];
+let imageCovers = [];
 let position;
 
 // 加载按钮点击事件
@@ -114,10 +115,10 @@ $("#load-grid-button").addEventListener("click", (event) => {
 		longtitude.style = "";
 		height.style = "";
 		if (typeList.value === "image") {
-			covers.push(new DataSet($(".selected-result-image").dataset.id, $(".selected-result-image").dataset.name));
+			imageCovers.push(new ImageCover($(".selected-result-image").dataset.id, $(".selected-result-image").dataset.name));
 
 			// 添加标签和图层
-			createCover(covers[covers.length - 1]);
+			createImageCover(imageCovers[imageCovers.length - 1]);
 		} else if (typeList.value === "terrain") {
 			if (terrainCheckbox.checked === false)
 				viewer.terrainProvider = new Cesium.EllipsoidTerrainProvider();
@@ -199,7 +200,7 @@ let dragObj, enterObj, dragIndex, enterIndex;
 
 coverage.addEventListener("dragstart", event => {
 	dragObj = event.target;
-	const dragList = $$(".cover");
+	const dragList = $$(".image-cover");
 	dragList.forEach((item, index) => {
 		if (item === event.target) {
 			dragIndex = index;
@@ -221,11 +222,11 @@ coverage.addEventListener("dragexit", (event) => {
 })
 
 coverage.addEventListener("dragenter", (event) => {
-	if (event.target.className === "cover") {
+	if (event.target.className === "image-cover") {
 		event.target.classList.add("cover-hold");
 	}
 	enterObj = event.target;
-	const dragList = $$(".cover");
+	const dragList = $$(".image-cover");
 	dragList.forEach((item, index) => {
 		if (item === event.target) {
 			enterIndex = index;
@@ -264,8 +265,8 @@ coverage.addEventListener("drop", (event) => {
 	}
 })
 
-// 被拖动的标签和位置
-let focusObj, focusIndex;
+// 被拖动/右键点击的标签和位置、类型
+let focusObj, focusIndex, focusType;
 // 右键菜单
 function onContentMenu(event) {
 	event.preventDefault();
@@ -276,10 +277,24 @@ function onContentMenu(event) {
 	menuObj.style.left = event.clientX + "px";
 	menuObj.style.top = event.clientY + "px";
 	focusObj = event.target;
-	const coverList = $$(".cover");
-	coverList.forEach((element, index) => {
-		if (element === event.target) focusIndex = index;
-	})
+	focusType = event.target.dataset.type;
+
+	// 不同类型
+	if (focusType === "image") {
+		const coverList = $$(".image-cover");
+		coverList.forEach((element, index) => {
+			if (element === event.target) focusIndex = index;
+		})
+		$("#alpha").style.display = "";
+		$("#pop-up").style.display = "none";
+	} else if (focusType === "vector") {
+		const coverList = $$(".vector-cover");
+		coverList.forEach((element, index) => {
+			if (element === event.target) focusIndex = viewer.dataSources.length - index - 1;
+		})
+		$("#alpha").style.display = "none";
+		$("#pop-up").style.display = "";
+	}
 } 
 
 // 关闭菜单
@@ -288,25 +303,36 @@ window.onclick = (event) => {
 	menuObj.style.display = "none";
 }
 
-// 删除
+// 删除功能
 const deleteBtn = $("#delete");
 deleteBtn.addEventListener("click", (event) => {
 	focusObj.remove();
-	viewer.imageryLayers.remove(viewer.imageryLayers.get(viewer.imageryLayers.length - focusIndex - 1));
+	if (focusType === "image")
+		viewer.imageryLayers.remove(viewer.imageryLayers.get(viewer.imageryLayers.length - focusIndex - 1));
+	else if (focusType === "vector") {
+		viewer.dataSources.remove(vectorCovers[focusIndex]);
+	}
 })
 
-// 切换透明度
-$(".range-bar").addEventListener("change", (e) => {
+// 切换透明度功能
+$(".image-range-bar").addEventListener("change", (e) => {
 	viewer.imageryLayers.get(viewer.imageryLayers.length - focusIndex - 1).alpha = e.target.value / 100;
+})
+
+// 弹出菜单
+$("#pop-up").addEventListener("click", (e) => {
+
 })
 
 // 工具显示状态
 let openToolNumber = 0;
 let focusTool;
-const toolsId = ["coverage", "grid", "vector"]
+const toolsId = ["coverage", "grid", "vector", "entity", "dev"]
+$("#coverage-tool").dataset.toolId = toolsId[0];
 $("#load-grid-tool").dataset.toolId = toolsId[1];
 $("#load-vector-tool").dataset.toolId = toolsId[2];
-$("#coverage-tool").dataset.toolId = toolsId[0];
+$("#load-entity-tool").dataset.toolId = toolsId[3];
+$("#dev-tool").dataset.toolId = toolsId[4];
 const tools = $$(".tool");
 const upper = $(".upper");
 const lower = $(".lower");

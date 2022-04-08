@@ -221,10 +221,13 @@ $(".search-box-terrain").addEventListener("keyup", (e) => {
 				element.style.display = "none";
 })
 
+let vectorCovers = [];
+
 // 矢量图层类型选择
 const vectorDataType = $("#vector-data-type");
 const chosenVectorData = $("#chosen-vector-file");
 vectorDataType.addEventListener("change", (e) => {
+	$("#load-geojson").style.display = "none";
 	if (e.target.value === "unchosen") {
 		$("#vector-choose-msg").style.display = "none";
 		chosenVectorData.style.display = "none";
@@ -233,7 +236,9 @@ vectorDataType.addEventListener("change", (e) => {
 		chosenVectorData.style.display = "";
 		switch (vectorDataType.value) {
 			case "geojson": 
-				chosenVectorData.accept = ".geojson"; break;
+				chosenVectorData.accept = ".geojson"; 
+				$("#load-geojson").style.display = "";
+				break;
 			case "gltf":
 				// todo 
 			case "3dtiles":
@@ -254,20 +259,75 @@ $("#load-vector-button").addEventListener("click", (e) => {
 		typeError.innerHTML = "没有选择文件！";
 		typeError.classList.add("error-msg");
 	} else {
+		// 读取文件
 		file = fileInput.files[0];
 		let reader = new FileReader();
 		reader.onload = (e) => {data = e.target.result;};
-		read.readAsDataURL(file);
-		switch (vectorDataType.value) {
-			case "geojson":
-				viewer.dataSources.add(
-					data, {
-						stroke: Cesium.Color.BLUE,
-						fill: Cesium.Color.DEEPSKYBLUE.withAlpha(0.5),
-						strokeWidth: 5,
-					}
-				)
-				break;
-		}
+		reader.readAsText(file);
+		reader.onloadend = (e) => {
+			switch (vectorDataType.value) {
+				// 添加GeoJSON
+				case "geojson":
+					const dataSource = new Cesium.GeoJsonDataSource();
+					dataSource.load(
+						JSON.parse(data),
+						{
+							stroke: Cesium.Color.BLUE,
+							fill: Cesium.Color.DEEPSKYBLUE.withAlpha(0.5),
+							strokeWidth: 5,
+						})
+					vectorCovers.push(dataSource);
+					createVectorCover(file);
+					viewer.dataSources.add(dataSource);
+					if ($("#use-focus-geojson").checked)
+						viewer.zoomTo(dataSource);
+					$("#load-vector-tool").reset();
+					$("#load-geojson").style.display = "none";
+					break;
+			}
+		};
+		typeError.innerHTML = "";
+		typeError.classList.remove("error-msg");
 	}
+})
+
+function createVectorCover(vector) {
+	const new_cover = document.createElement("div");
+	let attributes;
+
+	// 创建图层名
+	attributes = document.createElement("p");
+	attributes.textContent = (`${vector.name}`);
+	attributes.classList.add("cover-name");
+	attributes.style.pointerEvents = "none";
+	new_cover.appendChild(attributes);
+
+	// 创建图层符号化
+	// todo
+
+	new_cover.dataset.type = "vector";
+	new_cover.classList.add("vector-cover");
+	new_cover.oncontextmenu = onContentMenu;
+	$("#vector-covers").appendChild(new_cover);
+}
+
+$("#dev-button").addEventListener("click", (e) => {
+	e.preventDefault();
+	// viewer.entities.add({
+	// 	position: Cesium.Cartesian3.fromDegrees(121, 30.5, 10000),
+	// 	model: {
+	// 		show: true,
+	// 		uri: "./assets/Wood_Tower.glb",
+	// 		scale: 5.0,
+	// 		minimumPixelSize: 128,
+	// 		maximumScale: 10000,
+	// 	}
+	// })
+
+	// viewer.scene.primitives.add(
+	// 	new Cesium.Cesium3DTileset({
+	// 		url: Cesium.IonResource.fromAssetId(75343),
+	// 		debugColorizeTiles: true
+	// 	})
+	// )
 })

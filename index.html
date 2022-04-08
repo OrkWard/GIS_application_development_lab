@@ -32,14 +32,24 @@
 			<img class="tools-bar-icon" src="./images/图层_white.png">
 			<img class="tools-bar-icon" src="./images/grid_white.png">
 			<img class="tools-bar-icon" src="./images/vector_white.png">
+			<img class="tools-bar-icon" src="./images/entity_white.png">
+			<img class="tools-bar-icon" src="./images/dev_white.png">
 		</div>
 		<nav>加载与查看地图数据</nav>
+
+		<!--右键窗口-->
 		<div id="menu">
 			<div class="menu-item" id="delete">删除</div>
 			<div class="menu-item" id="alpha">
 				透明度
-				<input type="range" min="0" max="100" step="0.01" class="range-bar">
+				<input type="range" min="0" max="100" step="0.01" class="image-range-bar">
 			</div>
+			<div class="menu-item" id="pop-up">更多</div>
+		</div>
+		
+		<!--弹出窗口-->
+		<div id="pop-up">
+
 		</div>
 		<div id="tools-collection" style="display: none;">
 			<!--栅格图像加载工具-->
@@ -108,28 +118,55 @@
 				<img class="tools-icon" src="./images/图层.png">
 				<p class="title">图层</p>
 				<hr />
-				<div class="covers"></div>
+				<div id="image-covers"></div>
+				<hr />
+				<div id="vector-covers"></div>
+				
 			</div>
 			<!--矢量数据加载工具-->
-			<div class="tool" id="load-vector-tool">
+			<form class="tool" id="load-vector-tool">
 				<img class="tools-icon" src="./images/vector_black.png">
 				<p class="title">加载矢量数据</p>
 				<hr />
 
 				<!--选择数据类型-->
-				<label class="form-item">数据类型：<label> <br >
+				<label class="form-item">数据类型：</label> 
 				<div id="vector-type-error-msg"></div>
 				<select id="vector-data-type">
 					<option value="unchosen">未选择</option>
 					<option value="geojson">GeoJSON</option>
-					<option value="gltf">glTF</option>
-					<option value="3dtiles">3D Tiles</option>
+					<option value="kml">KML</option>
+					<option value="czml">CZML</option>
 				</select>
 				<br>
 
-				<label class="form-item" id="vector-choose-msg" style="display: none;">选择一个矢量文件：</label>
+				<p class="form-item" id="vector-choose-msg" style="display: none;">选择一个矢量文件：</p>
 				<input type="file" id="chosen-vector-file" style="display: none">
+				
+				<!--添加GeoJSON-->
+				<div id="load-geojson" style="display:none">
+					<label class="checktext">聚焦到添加的数据</label>
+					<input type="checkbox" class="checkbox" id="use-focus-geojson">
+				</div>
 				<button id="load-vector-button" class="submit-button">加载</button>
+			</form>
+			<!--实体数据添加工具-->
+			<form class="tool" id="load-entity-tool">
+				<img class="tools-icon" src="./images/entity_black.png">
+				<p class="title">加载实体数据</p>
+				<hr>
+
+				<!--选择实体类型-->
+				<!--todo-->
+
+				<button id="load-entity-button" class="submit-button">加载</button>
+			</form>
+			<!--调试用工具-->
+			<div class="tool" id="dev-tool">
+				<img class="tools-icon" src="./images/dev_black.png">
+				<p class="title">测试</p>
+				<hr />
+				<button id="dev-button" class="submit-button">加载</button>
 			</div>
 		</div>
 		<script type="text/javascript" src="./main.js"></script>
