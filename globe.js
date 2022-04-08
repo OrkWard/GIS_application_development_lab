@@ -221,8 +221,53 @@ $(".search-box-terrain").addEventListener("keyup", (e) => {
 				element.style.display = "none";
 })
 
+// 矢量图层类型选择
+const vectorDataType = $("#vector-data-type");
+const chosenVectorData = $("#chosen-vector-file");
+vectorDataType.addEventListener("change", (e) => {
+	if (e.target.value === "unchosen") {
+		$("#vector-choose-msg").style.display = "none";
+		chosenVectorData.style.display = "none";
+	} else {
+		$("#vector-choose-msg").style.display = "";
+		chosenVectorData.style.display = "";
+		switch (vectorDataType.value) {
+			case "geojson": 
+				chosenVectorData.accept = ".geojson"; break;
+			case "gltf":
+				// todo 
+			case "3dtiles":
+				// todo
+		}
+	}
+})
+
 // 矢量图层加载
-$("#load-vector-button").addEventListener((e) => {
+$("#load-vector-button").addEventListener("click", (e) => {
 	e.preventDefault();
-	
+	const fileInput = $("#chosen-vector-file");
+	let data, file;
+	// 错误信息
+	const typeError = $("#vector-type-error-msg");
+
+	if (!fileInput.value || vectorDataType.value === "unchosen") {
+		typeError.innerHTML = "没有选择文件！";
+		typeError.classList.add("error-msg");
+	} else {
+		file = fileInput.files[0];
+		let reader = new FileReader();
+		reader.onload = (e) => {data = e.target.result;};
+		read.readAsDataURL(file);
+		switch (vectorDataType.value) {
+			case "geojson":
+				viewer.dataSources.add(
+					data, {
+						stroke: Cesium.Color.BLUE,
+						fill: Cesium.Color.DEEPSKYBLUE.withAlpha(0.5),
+						strokeWidth: 5,
+					}
+				)
+				break;
+		}
+	}
 })

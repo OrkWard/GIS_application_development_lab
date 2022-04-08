@@ -58,16 +58,16 @@ const terrainCheckbox = $("#act-terrain");
 let covers = [];
 let position;
 
-// 错误信息显示
-const typeError = $("#type-error-msg");
-const scaleError = $("#scale-error-msg");
-const viewError = $("#view-error-msg");
-
 // 加载按钮点击事件
 $("#load-grid-button").addEventListener("click", (event) => {
 	event.preventDefault();
 	// 是否错误
 	let finish = true;
+	// 错误信息显示
+	const typeError = $("#grid-type-error-msg");
+	const scaleError = $("#scale-error-msg");
+	const viewError = $("#view-error-msg");
+
 
 	// 显示错误信息
 	if (typeList.value === "unchosen") {
@@ -303,6 +303,10 @@ $(".range-bar").addEventListener("change", (e) => {
 // 工具显示状态
 let openToolNumber = 2;
 let focusTool;
+const toolsId = ["coverage", "grid", "vector"]
+$("#load-grid-tool").dataset.toolId = toolsId[1];
+$("#load-vector-tool").dataset.toolId = toolsId[2];
+$("#coverage-tool").dataset.toolId = toolsId[0];
 const tools = $$(".tool");
 const upper = $(".upper");
 const lower = $(".lower");
@@ -373,8 +377,11 @@ function changeDisplay(e) {
 	console.log(focusTool);
 }
 
-$$(".tools-bar-icon").forEach((element) => {element.addEventListener("click", changeDisplay)})
-upper.appendChild($("#load-grid-tool"));
+$$(".tools-bar-icon").forEach((element, index) => {
+	element.dataset.toolId = toolsId[index];
+	element.addEventListener("click", changeDisplay)
+})
+upper.appendChild($("#load-vector-tool"));
 upper.lastElementChild.classList.add("row-resize-content");
 lower.appendChild($("#coverage-tool"));
 

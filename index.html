@@ -29,8 +29,9 @@
 			</div>
 		</div>
 		<div class="tools-bar">
-			<img class="tools-bar-icon" src="./images/地图_white.png" toolId="grid">
-			<img class="tools-bar-icon" src="./images/图层_white.png" toolId="coverage">
+			<img class="tools-bar-icon" src="./images/图层_white.png">
+			<img class="tools-bar-icon" src="./images/grid_white.png">
+			<img class="tools-bar-icon" src="./images/vector_white.png">
 		</div>
 		<nav>加载地图数据的简单工具组</nav>
 		<div id="menu">
@@ -40,16 +41,16 @@
 				<input type="range" min="0" max="100" step="0.01" class="range-bar">
 			</div>
 		</div>
-		<div id="tools-collection">
+		<div id="tools-collection" style="display: none;">
 			<!--栅格图像加载工具-->
-			<form id="load-grid-tool" class="tool" toolId="grid">
-				<img class="tools-icon" src="./images/地图.png"/>
+			<form id="load-grid-tool" class="tool">
+				<img class="tools-icon" src="./images/grid_black.png"/>
 				<p class="title">加载栅格数据</p>
 				<hr />
 
 				<!--选择数据类型-->
 				<label class="form-item">数据类型：</label>
-				<div id="type-error-msg"></div>
+				<div id="grid-type-error-msg"></div>
 				<select id="grid-data-type">
 					<option value="unchosen">未选择</option>
 					<option value="image">影像数据</option>
@@ -103,29 +104,31 @@
 				<button id="load-grid-button" class="submit-button">加载</button>
 			</form>
 			<!--图层管理工具-->
-			<div id="coverage-tool" toolId="coverage">
+			<div class="tool" id="coverage-tool">
 				<img class="tools-icon" src="./images/图层.png">
 				<p class="title">图层</p>
 				<hr />
 				<div class="covers"></div>
 			</div>
-			<div id="load-vector-tool" toolId="vector">
+			<!--矢量数据加载工具-->
+			<div class="tool" id="load-vector-tool">
 				<img class="tools-icon" src="./images/vector_black.png">
 				<p class="title">加载矢量数据</p>
 				<hr />
 
 				<!--选择数据类型-->
-				<label class="form-item">数据类型：<label>
-				<div id="type-error-msg"></div>
+				<label class="form-item">数据类型：<label> <br >
+				<div id="vector-type-error-msg"></div>
 				<select id="vector-data-type">
 					<option value="unchosen">未选择</option>
 					<option value="geojson">GeoJSON</option>
 					<option value="gltf">glTF</option>
 					<option value="3dtiles">3D Tiles</option>
 				</select>
+				<br>
 
-				<label class="form-item">选择一个地图文件</label>
-				<input type="file" id="chosen-vector-file">
+				<label class="form-item" id="vector-choose-msg" style="display: none;">选择一个矢量文件：</label>
+				<input type="file" id="chosen-vector-file" style="display: none">
 				<button id="load-vector-button" class="submit-button">加载</button>
 			</div>
 		</div>
