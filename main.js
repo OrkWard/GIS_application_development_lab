@@ -44,11 +44,11 @@ function createCover(cover) {
 
 // 用到的标签选择器
 const scaleCheckbox = document.getElementById("use-scale");
-const standCheckbox = document.getElementById("use-stand");
+const viewCheckbox = document.getElementById("use-view");
 const longtitude = $(".camera-longtitude");
 const latitude = $(".camera-latitude");
 const height = $(".camera-height");
-const typeList = document.getElementById("data-type");
+const typeList = document.getElementById("grid-data-type");
 const horizon = $(".rotate-horizon");
 const vertical = $(".rotate-vertical");
 const coverage = $(".covers");
@@ -61,7 +61,7 @@ let position;
 // 错误信息显示
 const typeError = $("#type-error-msg");
 const scaleError = $("#scale-error-msg");
-const standError = $("#stand-error-msg");
+const viewError = $("#view-error-msg");
 
 // 加载按钮点击事件
 $("#load-grid-button").addEventListener("click", (event) => {
@@ -85,9 +85,9 @@ $("#load-grid-button").addEventListener("click", (event) => {
 		$(".search-box-image").style.boxShadow = "0 0 3px red";
 	}
 
-	if ((horizon.value == "" || vertical.value == "") && standCheckbox.checked === false) {
-		standError.textContent = "请完整填写视角";
-		standError.classList.add("error-msg");
+	if ((horizon.value == "" || vertical.value == "") && viewCheckbox.checked === false) {
+		viewError.textContent = "请完整填写视角";
+		viewError.classList.add("error-msg");
 		horizon.style.boxShadow = "0 0 3px red";
 		vertical.style.boxShadow = "0 0 3px red";
 		finish = false;
@@ -104,7 +104,7 @@ $("#load-grid-button").addEventListener("click", (event) => {
 	// 显示错误信息后调整高度，或者添加标签
 	if (finish) {
 		// 关闭错误样式
-		typeError.textContent = scaleError.textContent = standError.textContent = "";
+		typeError.textContent = scaleError.textContent = viewError.textContent = "";
 		$(".search-box-image").style.boxShadow = "";
 		$(".search-box-terrain").style.boxShadow = "";
 		typeList.style.boxShadow = "0 0 3px gray";
@@ -131,7 +131,7 @@ $("#load-grid-button").addEventListener("click", (event) => {
 		}
 
 		// 更改位置
-		if (!scaleCheckbox.checked && !standCheckbox.checked) {
+		if (!scaleCheckbox.checked && !viewCheckbox.checked) {
 			position = Cesium.Cartesian3.fromDegrees(longtitude.value, latitude.value, height.value);
 			viewer.camera.flyTo({
 				destination: position,
@@ -174,7 +174,7 @@ scaleCheckbox.addEventListener("click", (event) => {
 		height.disabled = false;
 	}
 })
-standCheckbox.addEventListener("click", (event) => {
+viewCheckbox.addEventListener("click", (event) => {
 	if (event.target.checked === true) {
 		horizon.disabled = true;
 		vertical.disabled = true;
@@ -379,7 +379,7 @@ upper.lastElementChild.classList.add("row-resize-content");
 lower.appendChild($("#coverage-tool"));
 
 // 切换数据加载面板样式
-$("#data-type").addEventListener("change", (event) => {
+$("#grid-data-type").addEventListener("change", (event) => {
 	event.preventDefault();
 	if (event.target.value === "unchosen") {
 		$(".search-image").style.display = "none";

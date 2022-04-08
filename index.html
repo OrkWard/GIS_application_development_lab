@@ -44,13 +44,13 @@
 			<!--栅格图像加载工具-->
 			<form id="load-grid-tool" class="tool" toolId="grid">
 				<img class="tools-icon" src="./images/地图.png"/>
-				<p class="title">加载数据</p>
+				<p class="title">加载栅格数据</p>
 				<hr />
 
 				<!--选择数据类型-->
 				<label class="form-item">数据类型：</label>
 				<div id="type-error-msg"></div>
-				<select id="data-type">
+				<select id="grid-data-type">
 					<option value="unchosen">未选择</option>
 					<option value="image">影像数据</option>
 					<option value="terrain">地形数据</option>
@@ -91,23 +91,42 @@
 				
 				<!--选择视角-->
 				<label class="form-item">视角：</label>
-				<div id="stand-error-msg"></div>
+				<div id="view-error-msg"></div>
 				<label class="child-item">自北向顺时针旋转：</label>
 				<input type="text" class="textarea rotate-horizon"/>
 				<br>
 				<label class="child-item">水平向上旋转：</label>
 				<input type="text" class="textarea rotate-vertical"/>
 				<br />
-				<input type="checkbox" class="checkbox" id="use-stand"/>
+				<input type="checkbox" class="checkbox" id="use-view"/>
 				<label class="checktext">使用默认视角</label><br />
-				<button id="load-grid-button">加载</button>
+				<button id="load-grid-button" class="submit-button">加载</button>
 			</form>
 			<!--图层管理工具-->
-			<div id="coverage-tool" tool-id="1" toolId="coverage">
+			<div id="coverage-tool" toolId="coverage">
 				<img class="tools-icon" src="./images/图层.png">
 				<p class="title">图层</p>
 				<hr />
 				<div class="covers"></div>
+			</div>
+			<div id="load-vector-tool" toolId="vector">
+				<img class="tools-icon" src="./images/vector_black.png">
+				<p class="title">加载矢量数据</p>
+				<hr />
+
+				<!--选择数据类型-->
+				<label class="form-item">数据类型：<label>
+				<div id="type-error-msg"></div>
+				<select id="vector-data-type">
+					<option value="unchosen">未选择</option>
+					<option value="geojson">GeoJSON</option>
+					<option value="gltf">glTF</option>
+					<option value="3dtiles">3D Tiles</option>
+				</select>
+
+				<label class="form-item">选择一个地图文件</label>
+				<input type="file" id="chosen-vector-file">
+				<button id="load-vector-button" class="submit-button">加载</button>
 			</div>
 		</div>
 		<script type="text/javascript" src="./main.js"></script>

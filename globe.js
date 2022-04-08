@@ -220,3 +220,9 @@ $(".search-box-terrain").addEventListener("keyup", (e) => {
 			} else
 				element.style.display = "none";
 })
+
+// 矢量图层加载
+$("#load-vector-button").addEventListener((e) => {
+	e.preventDefault();
+	
+})
