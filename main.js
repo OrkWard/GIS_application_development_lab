@@ -301,7 +301,7 @@ $(".range-bar").addEventListener("change", (e) => {
 })
 
 // 工具显示状态
-let openToolNumber = 2;
+let openToolNumber = 0;
 let focusTool;
 const toolsId = ["coverage", "grid", "vector"]
 $("#load-grid-tool").dataset.toolId = toolsId[1];
@@ -311,9 +311,6 @@ const tools = $$(".tool");
 const upper = $(".upper");
 const lower = $(".lower");
 const toolsColletction = $("#tools-collection");
-tools.forEach((element) => {
-	element.dataset.onDisplay = false;
-})
 
 // 交换上下工具显示
 function exchange() {
@@ -323,67 +320,60 @@ function exchange() {
 	lower.appendChild(upperContent);
 	upperContent.classList.remove("row-resize-content");
 	lowerContext.classList.add("row-resize-content");
-	[stateCoverage.position, stateLoad.position] = [stateLoad.position, stateCoverage.position];
 }
 
 // 改变显示状态
 function changeDisplay(e) {
 	tools.forEach((element) => {
-		if (element.dataset.toolId === e.target.toolId) focusTool = element;
+		if (element.dataset.toolId === e.target.dataset.toolId) focusTool = element;
 	})
 	switch (openToolNumber) {
 		case 0:
 			$(".left").style.display = "";
 			upper.style.display = "none";
 			lower.appendChild(focusTool);
-			focusTool.dataset.onDisplay = true;
 			openToolNumber = 1;
 			break;
 		case 1:
-			if (lower.lastElementChild.dataset.toolId === e.target.toolId) focusTool = lower.lastElementChild;
-			if (focusTool.dataset.onDisplay) {
-				lower.classList.remove("row-resize-content");
+			if (lower.lastElementChild.dataset.toolId === e.target.dataset.toolId) {
+				focusTool = lower.lastElementChild;
 				toolsColletction.appendChild(lower.lastElementChild);
-				lower.style.display = "none";
+				$(".left").style.display = "none";
 				openToolNumber = 0;
-				focusTool.dataset.onDisplay = false;
 			} else {
 				upper.appendChild(focusTool);
 				exchange();
 				upper.style.display = "";
-				focusTool.dataset.onDisplay = true;
+				upper.lastElementChild.classList.add("row-resize-content");
 				openToolNumber = 2;
 			}
 			break;
 		case 2:
-			if (upper.lastElementChild.dataset.toolId === e.target.toolId) focusTool = upper.lastElementChild;
-			if (lower.lastElementChild.dataset.toolId === e.target.toolId) focusTool = lower.lastElementChild;
-			if (focusTool.dataset.onDisplay) {
-				if (!upper.lastElementChild.toolId === focusTool.dataset.toolId) {
-					exchange();
-				}
+			if (upper.lastElementChild.dataset.toolId === e.target.dataset.toolId) {
+				focusTool = upper.lastElementChild;
 				upper.style.display = "none";
-				focusTool.dataset.onDisplay = false;
+				focusTool.classList.remove("row-resize-content");
+				toolsColletction.appendChild(focusTool);
+				openToolNumber = 1;
+			} else if (lower.lastElementChild.dataset.toolId === e.target.dataset.toolId) {
+				focusTool = lower.lastElementChild;
+				exchange();
+				upper.style.display = "none";
 				focusTool.classList.remove("row-resize-content");
 				toolsColletction.appendChild(focusTool);
 				openToolNumber = 1;
 			} else {
 				toolsColletction.appendChild(lower.lastElementChild);
 				lower.appendChild(focusTool);
-				focusTool.dataset.onDisplay = true;
 			}
 			break;
 	}
-	console.log(focusTool);
 }
 
 $$(".tools-bar-icon").forEach((element, index) => {
 	element.dataset.toolId = toolsId[index];
 	element.addEventListener("click", changeDisplay)
 })
-upper.appendChild($("#load-vector-tool"));
-upper.lastElementChild.classList.add("row-resize-content");
-lower.appendChild($("#coverage-tool"));
 
 // 切换数据加载面板样式
 $("#grid-data-type").addEventListener("change", (event) => {
