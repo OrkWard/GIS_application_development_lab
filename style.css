@@ -168,7 +168,7 @@ nav {
 
 /* 全局输入框 */
 .textarea {
-	width: 70px;
+	width: 58px;
 	box-shadow: 0 0 3px gray;
 	border-width: 1px;
 	border-radius: 4px;
@@ -336,11 +336,17 @@ select {
 }
 
 /* 右键更多按钮 */
-#pop-up {
+#more {
 	background-image: url("./images/pop-up.png");
 	background-position: left;
-	background-size: 27px;
+	background-size: 18px;
+	background-position-x: 4px;
 	background-repeat: no-repeat;
+}
+#more:hover {
+	background-color: var(--gray);
+	border-radius: 4px;
+	cursor: default;
 }
 
 /* openlayers使用的容器，已弃用 */
@@ -393,4 +399,56 @@ canvas {
 /* 矢量图像加载工具容器 */
 #load-vector-tool {
 	padding: 10px;
+}
+
+/* 遮罩 */
+#mask {
+	position: fixed;
+	left: 0;
+	top: 0;
+	height: 100%;
+	width: 100%;
+	background-color: black;
+	opacity: 0.5;
+}
+
+/* 弹出窗口 */
+#pop-up {
+	padding: 30px;
+	border-radius: 15px;
+	position: fixed;
+	left: calc(50% - 96px);
+	top: calc(50% - 61px);
+	background-color: white;
+	box-shadow: 0 0 5px gray;
+}
+
+/* 弹窗内标签 */
+.pop-up-item {
+	text-align: center;
+}
+
+
+/* 弹窗内标签文本 */
+.pop-up-label {
+	margin: 5px;
+	text-align: center;
+}
+
+/* 颜色选择框 */
+#vector-color {
+	height: 20px;
+	padding: 0;
+	width: 64px;
+}
+
+/* 弹框标题 */
+.pop-up-title {
+	font-size: 20px;
+	font-weight: bold;
+	text-align: center;
+}
+
+#vector-signify:hover {
+	padding: 5px 125px;
 }

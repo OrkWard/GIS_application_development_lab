@@ -277,7 +277,7 @@ $("#load-vector-button").addEventListener("click", (e) => {
 							strokeWidth: 5,
 						})
 					vectorCovers.push(dataSource);
-					createVectorCover(file);
+					createVectorCover(file, vectorDataType.value);
 					viewer.dataSources.add(dataSource);
 					if ($("#use-focus-geojson").checked)
 						viewer.zoomTo(dataSource);
@@ -288,10 +288,12 @@ $("#load-vector-button").addEventListener("click", (e) => {
 		};
 		typeError.innerHTML = "";
 		typeError.classList.remove("error-msg");
+		$("#vector-choose-msg").style.display = "none";
+		$("#chosen-vector-file").style.display = "none";
 	}
 })
 
-function createVectorCover(vector) {
+function createVectorCover(vector, type) {
 	const new_cover = document.createElement("div");
 	let attributes;
 
@@ -302,14 +304,32 @@ function createVectorCover(vector) {
 	attributes.style.pointerEvents = "none";
 	new_cover.appendChild(attributes);
 
-	// 创建图层符号化
-	// todo
+	// 创建图层类型
+	attributes = document.createElement("p");;
+	attributes.textContent = `数据类型：${type}`
+	attributes.classList.add("cover-id");
+	attributes.style.pointerEvents = "none";
+	new_cover.appendChild(attributes);
 
 	new_cover.dataset.type = "vector";
 	new_cover.classList.add("vector-cover");
 	new_cover.oncontextmenu = onContentMenu;
 	$("#vector-covers").appendChild(new_cover);
 }
+
+$("#vector-signify").addEventListener("click", (e) => {
+	const vector = vectorCovers[focusIndex];
+	const entities = vector.entities.values;
+	if ($("#vector-shape").value === "unchosen") return;
+	for (let i = 0; i < entities.length; i++) {
+		const entity = entities[i];
+		entity.billboard.image = $("#vector-shape").value;
+		if (!($("#vector-color").value == ""))
+			entity.billboard.color = new Cesium.Color.fromCssColorString($("#vector-color").value);
+		if (!($("#vector-size").value == "")) 
+			entity.billboard.scale = $("#vector-size").value;
+	}
+})
 
 $("#dev-button").addEventListener("click", (e) => {
 	e.preventDefault();

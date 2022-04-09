@@ -44,12 +44,39 @@
 				透明度
 				<input type="range" min="0" max="100" step="0.01" class="image-range-bar">
 			</div>
-			<div class="menu-item" id="pop-up">更多</div>
+			<div class="menu-item" id="more">更多</div>
 		</div>
+
+		<!--遮罩层-->
+		<div id="mask" style="display: none;"></div>
 		
 		<!--弹出窗口-->
-		<div id="pop-up">
-
+		<div id="pop-up" style="display: none;">
+			<div class="pop-up-title">符号化</div>
+			<hr>
+			<div class="pop-up-item">
+				<label class="pop-up-label">选择形状</label>
+				<select id="vector-shape">
+					<option value="unchosen">未选择</option>
+					<option value=".\assets\icons\叉_64.png">叉</option>
+					<option value=".\assets\icons\倒三角_64.png">倒三角</option>
+					<option value=".\assets\icons\五边形_64.png">五边形</option>
+					<option value=".\assets\icons\五角星_64.png">五角星</option>
+					<option value=".\assets\icons\圆环_64.png">圆环</option>
+					<option value=".\assets\icons\圆心_64.png">圆心</option>
+					<option value=".\assets\icons\圆形_64.png">圆形</option>
+					<option value=".\assets\icons\正方形_64.png">正方形</option>
+				</select> <br>
+			</div>
+			<div class="pop-up-item">
+				<label class="pop-up-label">选择颜色</label> 
+				<input type="color" id="vector-color"><br>
+			</div>
+			<div class="pop-up-item">
+				<label class="pop-up-label">输入尺寸</label>
+				<input type="textarea" id="vector-size" class="textarea">
+			</div>
+			<button id="vector-signify" class="submit-button">确认</button>
 		</div>
 		<div id="tools-collection" style="display: none;">
 			<!--栅格图像加载工具-->

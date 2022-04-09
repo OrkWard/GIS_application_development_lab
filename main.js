@@ -283,24 +283,27 @@ function onContentMenu(event) {
 	if (focusType === "image") {
 		const coverList = $$(".image-cover");
 		coverList.forEach((element, index) => {
-			if (element === event.target) focusIndex = index;
+			if (element === event.target) focusIndex = viewer.imageryLayers.length - index - 1;
 		})
 		$("#alpha").style.display = "";
-		$("#pop-up").style.display = "none";
+		$("#more").style.display = "none";
 	} else if (focusType === "vector") {
 		const coverList = $$(".vector-cover");
 		coverList.forEach((element, index) => {
 			if (element === event.target) focusIndex = viewer.dataSources.length - index - 1;
 		})
 		$("#alpha").style.display = "none";
-		$("#pop-up").style.display = "";
+		$("#more").style.display = "";
 	}
 } 
 
 // 关闭菜单
 window.onclick = (event) => {
-	const menuObj = document.getElementById("menu");
-	menuObj.style.display = "none";
+	if (event.target !== $(".image-range-bar"))
+		$("#menu").style.display = "none";
+	const popUp = $("#pop-up");
+	if (!(event.target === popUp || popUp.contains(event.target) || event.target === $("#more")))
+		$("#pop-up").style.display = "none";
 }
 
 // 删除功能
@@ -320,8 +323,15 @@ $(".image-range-bar").addEventListener("change", (e) => {
 })
 
 // 弹出菜单
-$("#pop-up").addEventListener("click", (e) => {
+$("#more").addEventListener("click", (e) => {
+	$("#pop-up").style.display = "";
+	$("#menu").style.display = "none";
+	$("#mask").style.display = "";
+})
 
+$("#mask").addEventListener("click", (e) => {
+	$("#pop-up").style.display = "none";
+	e.target.style.display = "none";
 })
 
 // 工具显示状态
