@@ -337,12 +337,13 @@ $("#mask").addEventListener("click", (e) => {
 // 工具显示状态
 let openToolNumber = 0;
 let focusTool;
-const toolsId = ["coverage", "grid", "vector", "entity", "dev"]
-$("#coverage-tool").dataset.toolId = toolsId[0];
-$("#load-grid-tool").dataset.toolId = toolsId[1];
-$("#load-vector-tool").dataset.toolId = toolsId[2];
-$("#load-entity-tool").dataset.toolId = toolsId[3];
-$("#dev-tool").dataset.toolId = toolsId[4];
+const toolsId = ["coverage", "grid", "bookmark", "vector", "entity", "dev"]
+$$(".tool").forEach((element, index) => {element.dataset.toolId = toolsId[index];})
+$$(".tools-bar-icon").forEach((element, index) => {
+	element.dataset.toolId = toolsId[index];
+	element.addEventListener("click", changeDisplay)
+})
+
 const tools = $$(".tool");
 const upper = $(".upper");
 const lower = $(".lower");
@@ -405,11 +406,6 @@ function changeDisplay(e) {
 			break;
 	}
 }
-
-$$(".tools-bar-icon").forEach((element, index) => {
-	element.dataset.toolId = toolsId[index];
-	element.addEventListener("click", changeDisplay)
-})
 
 // 切换数据加载面板样式
 $("#grid-data-type").addEventListener("change", (event) => {

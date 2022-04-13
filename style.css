@@ -316,7 +316,7 @@ select {
 
 /* 右键删除按钮 */
 #delete {
-    background-image: url("./images/删除.png");
+    background-image: url("./images/delete_black.png");
     background-position: left;
     background-size: 27px;
     background-repeat: no-repeat;
@@ -449,6 +449,51 @@ canvas {
 	text-align: center;
 }
 
+/* 符号化确认按钮 */
 #vector-signify:hover {
 	padding: 5px 125px;
+}
+
+#create-bookmark {
+	width: -webkit-fill-available;
+	height: 25px;
+}
+
+.bookmark {
+    background-color: var(--darker-background);
+    border-left: 3px solid var(--main-color);
+	margin: 0;
+	cursor: pointer;
+}
+.bookmark:hover {
+	background-color: var(--lighter-background);
+}
+
+.bookmark-name {
+    margin: 0;
+    padding: 5px 0 0 5px;
+    font-size: 20px;
+    border-bottom: 1px solid;
+	pointer-events: none;
+}
+
+.bookmark-right {
+    width: 38px;
+    float: right;
+    background-color: var(--main-color);
+    cursor: pointer;
+}
+.bookmark-right:hover {
+	background-color: var(--main-lighter);
+}
+
+.bookmark-left {
+    font-size: 10px;
+    margin: 0;
+    padding: 0 0 5px 5px;
+	pointer-events: none;
+}
+
+.bookmark-number {
+    margin: 0;
 }

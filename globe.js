@@ -351,3 +351,63 @@ $("#dev-button").addEventListener("click", (e) => {
 	// 	})
 	// )
 })
+
+$("#add-bookmark").addEventListener("click", (e) => {
+	e.preventDefault();
+	const heading = viewer.camera.heading;
+	const pitch = viewer.camera.pitch;
+	const roll = viewer.camera.roll;
+	const position = viewer.camera.position;
+
+	const new_bookmark = document.createElement("p");
+	let attributes;
+
+	// 书签名
+	attributes = document.createElement("p");
+	attributes.textContent = `${$("#create-bookmark").value}`
+	$("create-bookmark").value = "";
+	attributes.classList.add("bookmark-name");
+	new_bookmark.appendChild(attributes);
+
+	// 删除图标
+	let div = document.createElement("img");
+	div.src = "./images/delete_white.png"
+	div.classList.add("bookmark-right");
+	//删除事件
+	div.addEventListener("click", (e) => {
+		e.target.parentElement.remove();
+	});
+	new_bookmark.appendChild(div);
+
+	// 书签位置
+	div = document.createElement("div");
+	new_bookmark.appendChild(div);
+	div.classList.add("bookmark-left");
+	attributes = document.createElement("p");
+	attributes.textContent = `x:${position.x.toFixed(2)} y:${position.y.toFixed(2)} z:${position.z.toFixed(2)}`
+	attributes.classList.add("bookmark-number");
+	div.appendChild(attributes);
+	attributes = document.createElement("p");
+	attributes.textContent = `heading:${heading.toFixed(2)} pitch:${pitch.toFixed(2)} roll:${roll.toFixed(2)}`;
+	attributes.classList.add("bookmark-number");
+	div.appendChild(attributes);
+
+	new_bookmark.classList.add("bookmark");
+	new_bookmark.dataset.heading = heading;
+	new_bookmark.dataset.pitch = pitch;
+	new_bookmark.dataset.roll = roll;
+	new_bookmark.dataset.x = position.x;
+	new_bookmark.dataset.y = position.y;
+	new_bookmark.dataset.z = position.z;
+	new_bookmark.addEventListener("click", (e) => {
+		viewer.camera.flyTo({
+			destination: new Cesium.Cartesian3(e.target.dataset.x, e.target.dataset.y, e.target.dataset.z),
+			orientation: {
+				heading: e.target.dataset.heading, 
+				pitch: e.target.dataset.pitch,
+				roll: e.target.dataset.roll
+			}
+		})
+	})
+	$("#bookmark-list").appendChild(new_bookmark);
+})
