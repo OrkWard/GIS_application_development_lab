@@ -10,6 +10,7 @@ const viewer = new Cesium.Viewer("cesium-container", {
 	homeButton: false,
 	dataSourceDisplay: false,
 	animation: false,
+	selectionIndicator: false,
 });
 $(".cesium-widget-credits").style.display = "none";
 viewer.imageryLayers.remove(viewer.imageryLayers.get(0), true);
@@ -236,7 +237,7 @@ vectorDataType.addEventListener("change", (e) => {
 		chosenVectorData.style.display = "";
 		switch (vectorDataType.value) {
 			case "geojson": 
-				chosenVectorData.accept = ".geojson"; 
+				chosenVectorData.accept = ".geojson, .topojson"; 
 				$("#load-geojson").style.display = "";
 				break;
 			case "gltf":
@@ -317,6 +318,7 @@ function createVectorCover(vector, type) {
 	$("#vector-covers").appendChild(new_cover);
 }
 
+// 符号化
 $("#vector-signify").addEventListener("click", (e) => {
 	const vector = vectorCovers[focusIndex];
 	const entities = vector.entities.values;
@@ -365,7 +367,7 @@ $("#add-bookmark").addEventListener("click", (e) => {
 	// 书签名
 	attributes = document.createElement("p");
 	attributes.textContent = `${$("#create-bookmark").value}`
-	$("create-bookmark").value = "";
+	$("#create-bookmark").value = "";
 	attributes.classList.add("bookmark-name");
 	new_bookmark.appendChild(attributes);
 
@@ -411,3 +413,16 @@ $("#add-bookmark").addEventListener("click", (e) => {
 	})
 	$("#bookmark-list").appendChild(new_bookmark);
 })
+
+let handler = new Cesium.ScreenSpaceEventHandler(viewer.canvas);
+handler.setInputAction((e) => {
+	let pickedEntity = viewer.scene.pick(e.position);
+	for (let i = 0; i < viewer.dataSources.length; i++) {
+		for (let j = 0; j < viewer.dataSources.get(i).entities.values.length; j++) {
+			viewer.dataSources.get(i).entities.values[j].polygon.material = new Cesium.ColorMaterialProperty(new Cesium.Color(0, 0.75, 1, 0.5));
+		}
+	}
+	if (Cesium.defined(pickedEntity)) {
+		pickedEntity.id.polygon.material = new Cesium.ColorMaterialProperty(new Cesium.Color(0, 0.75, 1, 1));
+	}
+}, Cesium.ScreenSpaceEventType.LEFT_CLICK);
