@@ -354,6 +354,7 @@ $("#dev-button").addEventListener("click", (e) => {
 	// )
 })
 
+// 增加书签按钮
 $("#add-bookmark").addEventListener("click", (e) => {
 	e.preventDefault();
 	const heading = viewer.camera.heading;
@@ -414,6 +415,7 @@ $("#add-bookmark").addEventListener("click", (e) => {
 	$("#bookmark-list").appendChild(new_bookmark);
 })
 
+// 元素选择事件
 let handler = new Cesium.ScreenSpaceEventHandler(viewer.canvas);
 handler.setInputAction((e) => {
 	let pickedEntity = viewer.scene.pick(e.position);

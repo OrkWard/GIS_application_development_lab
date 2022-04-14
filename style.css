@@ -454,11 +454,13 @@ canvas {
 	padding: 5px 125px;
 }
 
+/* 书签名输入框 */
 #create-bookmark {
 	width: -webkit-fill-available;
 	height: 25px;
 }
 
+/* 书签容器 */
 .bookmark {
     background-color: var(--darker-background);
     border-left: 3px solid var(--main-color);
@@ -469,6 +471,7 @@ canvas {
 	background-color: var(--lighter-background);
 }
 
+/* 书签名 */
 .bookmark-name {
     margin: 0;
     padding: 5px 0 0 5px;
@@ -477,6 +480,7 @@ canvas {
 	pointer-events: none;
 }
 
+/* 书签删除图标 */
 .bookmark-right {
     width: 38px;
     float: right;
@@ -487,6 +491,7 @@ canvas {
 	background-color: var(--main-lighter);
 }
 
+/* 书签左侧部分 */
 .bookmark-left {
     font-size: 10px;
     margin: 0;
@@ -494,6 +499,7 @@ canvas {
 	pointer-events: none;
 }
 
+/* 书签数字部分 */
 .bookmark-number {
     margin: 0;
 }
